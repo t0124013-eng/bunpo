@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>英文法 ラボ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=JetBrains+Mono:wght@500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+/* 白い紙の上に「文の実験台」が並ぶレイアウト。紙＝方眼、インク＝紺、赤＝マークシートの赤、青＝先行詞・説明される語、橙＝説明のかたまり（節） */
+:root{
+  --bg:#FFFFFF; --paper:#F6F8FA; --grid:#E2E8EF; --card:#FFFFFF; --ink:#18212D; --muted:#5A6878; --line:#CDD6E0;
+  --red:#D3263B; --red-soft:#FBE3E6; --blue:#1F5FA6; --blue-soft:#DDE9F6; --orange:#D9711A; --orange-soft:#FBE9D6;
+  --green:#178A5C; --green-soft:#DAF1E6; --violet:#6A4BB0; --violet-soft:#ECE6F8;
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-num:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --f-en:"Source Serif 4","Georgia","Times New Roman",serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0F141A; --paper:#0F141A; --grid:#1A222C; --card:#161D26; --ink:#E5ECF3; --muted:#97A6B7; --line:#2C3846;
+  --red:#FF5B6E; --red-soft:#3A1C22; --blue:#6EA9EE; --blue-soft:#18283B; --orange:#F2A05A; --orange-soft:#3A2814;
+  --green:#4CC795; --green-soft:#132E24; --violet:#A994EE; --violet-soft:#241D3A; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0F141A; --paper:#0F141A; --grid:#1A222C; --card:#161D26; --ink:#E5ECF3; --muted:#97A6B7; --line:#2C3846;
+  --red:#FF5B6E; --red-soft:#3A1C22; --blue:#6EA9EE; --blue-soft:#18283B; --orange:#F2A05A; --orange-soft:#3A2814;
+  --green:#4CC795; --green-soft:#132E24; --violet:#A994EE; --violet-soft:#241D3A; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.75;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--card)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.35;margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.en{font-family:var(--f-en)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--card);border-bottom:2px solid var(--ink)}
+.top-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:900;font-size:19px;letter-spacing:.02em;white-space:nowrap}
+.logo small{font-weight:700;font-size:11px;color:var(--muted);letter-spacing:.08em}
+.rank{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0}
+.rank-name{font-family:var(--f-display);font-weight:700;font-size:13px;border:1.5px solid var(--red);color:var(--red);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.rank-rate{font-size:12px;color:var(--muted);white-space:nowrap}
+.rank-rate b{font-family:var(--f-num);font-size:17px;color:var(--ink)}
+.rank-bar{width:90px;height:6px;border-radius:3px;background:var(--grid);overflow:hidden}
+.rank-bar i{display:block;height:100%;background:var(--red);width:0;transition:width .6s}
+nav.tabs{max-width:1040px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:none;text-decoration:none;color:var(--muted);font-weight:700;font-size:13.5px;padding:6px 12px 7px;border-bottom:3px solid transparent}
+nav.tabs a.on{color:var(--ink);border-bottom-color:var(--red)}
+nav.tabs a:hover{color:var(--ink)}
+
+main{max-width:1040px;margin:0 auto;padding-block:22px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.loading{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;font-size:14px}
+.foot{max-width:1040px;margin:0 auto;color:var(--muted);font-size:12px;padding-block:0 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.foot p{margin:4px 0}
+
+/* home */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:center;margin-bottom:26px}
+.hero h1{font-size:clamp(30px,6vw,50px);font-weight:900;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero .lead{color:var(--muted);margin:10px 0 0;max-width:34em}
+.hero-cv{background:var(--card);border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.hero-cv .hd{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1.5px solid var(--line);flex-wrap:wrap}
+.hero-cv .hd small{font-size:11.5px;color:var(--muted);margin-left:auto}
+.hero-stage{padding:22px 16px 18px;min-height:210px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.hero-stage .big{font-family:var(--f-en);font-size:clamp(20px,3.4vw,27px);line-height:1.8}
+.hero-stage .jp{font-size:14px;color:var(--muted)}
+@media (max-width:720px){.hero{grid-template-columns:1fr}}
+.part{margin:28px 0 10px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.part h2{font-size:22px;font-weight:900}
+.part .tag{font-family:var(--f-num);font-size:12px;color:var(--card);background:var(--ink);padding:1px 8px;border-radius:4px;letter-spacing:.06em}
+.part p{margin:0;color:var(--muted);font-size:13.5px}
+.units{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.ucard{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px 14px 12px;transition:border-color .15s,transform .15s}
+.ucard:hover{border-color:var(--ink);transform:translateY(-2px)}
+.ucard .no{font-family:var(--f-num);font-size:12px;color:var(--red);font-weight:700}
+.ucard h3{font-size:17px;font-weight:900}
+.ucard ul{margin:0;padding:0;list-style:none;font-size:12.5px;color:var(--muted)}
+.ucard ul li::before{content:"▸ ";color:var(--blue)}
+.ucard .pg{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);margin-top:auto;padding-top:6px}
+.ucard .pg .bar{flex:1;height:5px;background:var(--grid);border-radius:3px;overflow:hidden}
+.ucard .pg .bar i{display:block;height:100%;background:var(--green)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.tool{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.tool:hover{border-color:var(--ink)}
+.tool b{font-family:var(--f-display);font-size:15.5px;display:block}
+.tool span{font-size:12px;color:var(--muted)}
+.tool .ic{flex:none;width:38px;height:38px;border-radius:8px;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:15px;background:var(--blue-soft);color:var(--blue)}
+.tool .ic.lv-jugyo{background:var(--green-soft);color:var(--green)}
+.tool .ic.lv-teiki{background:var(--blue-soft);color:var(--blue)}
+.tool .ic.lv-nyushi{background:var(--orange-soft);color:var(--orange)}
+.tool .ic.lv-kyotsu{background:var(--violet-soft);color:var(--violet)}
+
+/* mascot */
+.say{display:flex;gap:10px;align-items:flex-start;margin:14px 0}
+.say svg{flex:none;width:52px;height:52px}
+.say .bubble{position:relative;background:var(--card);border:1.5px solid var(--ink);border-radius:12px;padding:9px 13px;font-size:14px;min-width:0}
+.say .bubble::before{content:"";position:absolute;left:-8px;top:16px;width:12px;height:12px;background:var(--card);border-left:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:rotate(45deg)}
+.say .bubble b.who{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+/* unit page */
+.crumb{font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.crumb a{color:var(--muted)}
+.uh{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.uh .no{font-family:var(--f-num);color:var(--red);font-weight:700}
+.uh h1{font-size:clamp(24px,4.6vw,34px);font-weight:900}
+.sec-t{font-family:var(--f-display);font-weight:900;font-size:19px;margin:28px 0 10px;display:flex;align-items:center;gap:10px}
+.sec-t::after{content:"";flex:1;height:2px;background:var(--ink);opacity:.85}
+.sub-t{font-family:var(--f-display);font-weight:900;font-size:15px;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.points{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:6px 16px}
+.points .pt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;padding:10px 0;border-bottom:1px dashed var(--line);align-items:center}
+.points .pt:last-child{border-bottom:0}
+.points .pt p{margin:0;font-size:14.5px;min-width:0}
+.points .pt p .en{font-size:15.5px}
+.fx{font-family:var(--f-en);font-weight:600;background:var(--blue-soft);color:var(--blue);padding:2px 9px;border-radius:5px;white-space:nowrap;font-size:14.5px}
+@media (max-width:560px){.points .pt{grid-template-columns:1fr}.points .pt .fx{justify-self:start;white-space:normal}}
+
+.lab{background:var(--card);border:2px solid var(--ink);border-radius:var(--r);margin:16px 0;overflow:hidden}
+.lab-h{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1.5px solid var(--line);flex-wrap:wrap}
+.lab-h .lt{font-family:var(--f-num);font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--card);background:var(--red);padding:1px 8px;border-radius:4px}
+.lab-h h3{font-size:17px;font-weight:900}
+.lab-h .done{margin-left:auto;font-size:11.5px;color:var(--muted)}
+.lab-h .done.on{color:var(--green);font-weight:700}
+.lab-b{padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px}
+.try{font-size:13.5px;background:var(--orange-soft);border-radius:8px;padding:7px 11px;margin:0}
+.try b{color:var(--orange)}
+.btns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.btn{border:1.5px solid var(--ink);background:var(--card);color:var(--ink);border-radius:7px;padding:5px 12px;font-weight:700;font-size:13.5px;cursor:pointer;line-height:1.4}
+.btn:hover{background:var(--grid)}
+.btn.pri{background:var(--ink);color:var(--card)}
+.btn.pri:hover{opacity:.88}
+.btn:disabled{opacity:.45;cursor:default}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:7px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:var(--card);padding:5px 11px;font-size:13px;font-weight:700;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--ink);color:var(--card)}
+.chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;cursor:pointer;user-select:none}
+.chk input{accent-color:var(--red);width:16px;height:16px}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 18px;align-items:end}
+.sl{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sl label{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:700}
+.sl label .num{color:var(--blue);font-weight:700}
+.sl input[type=range]{width:100%;accent-color:var(--red);height:26px}
+details.why{border-top:1px dashed var(--line);padding-top:8px}
+details.why summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--blue)}
+details.why .say{margin:8px 0 0}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:1px 9px;border-radius:999px;background:var(--green-soft);color:var(--green)}
+
+/* 文の実験台 */
+.bench{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.bench .lbl{font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.05em}
+.sent{font-family:var(--f-en);font-size:clamp(17px,2.6vw,20px);line-height:2.05;min-width:0;overflow-wrap:anywhere}
+.sent .jp,.jpline{font-family:var(--f-body);font-size:14px;color:var(--muted);line-height:1.7}
+.w{display:inline-block;padding:0 3px;border-radius:4px;transition:background .25s,color .25s,opacity .3s,transform .35s}
+.w.ant{background:var(--blue-soft);color:var(--blue);box-shadow:inset 0 -2px 0 var(--blue)}
+.w.rel{background:var(--red);color:var(--card);font-weight:600}
+.w.relsoft{background:var(--red-soft);color:var(--red);font-weight:600}
+.w.cl{box-shadow:inset 0 -2.5px 0 var(--orange)}
+.w.vb{background:var(--orange-soft);color:var(--orange);font-weight:600}
+.w.hit{background:var(--green-soft);color:var(--green);font-weight:600}
+.w.dim{opacity:.35}
+.w.gone{opacity:0;transform:translateY(-10px) scale(.8)}
+.w.tap{cursor:pointer;border:1.5px dashed var(--line);margin:0 1px;padding:0 5px;line-height:1.7}
+.w.tap:hover{border-color:var(--ink)}
+.w.tap.ng{border-color:var(--red);background:var(--red-soft)}
+.w.blank{min-width:3.4em;text-align:center;border-bottom:2px solid var(--ink);border-radius:0;color:var(--red);font-weight:700}
+.clause{box-shadow:inset 0 -3px 0 var(--orange);padding-bottom:1px}
+.gapbtn{display:inline-block;vertical-align:middle;width:22px;height:30px;margin:0 1px;border:1.5px dashed var(--line);border-radius:5px;background:transparent;cursor:pointer;padding:0;position:relative;top:-2px}
+.gapbtn:hover{border-color:var(--ink);background:var(--card)}
+.gapbtn.ok{border:2px solid var(--green);background:var(--green-soft);width:46px}
+.gapbtn.ok::after{content:"穴";font-family:var(--f-body);font-size:11px;color:var(--green);font-weight:700}
+.gapbtn.ng{border-color:var(--red);background:var(--red-soft)}
+@keyframes pop{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+@keyframes slidein{0%{opacity:0;transform:translateX(40px)}100%{opacity:1;transform:none}}
+.pop{animation:pop .45s both}
+.slidein{animation:slidein .5s both}
+.note{font-size:13.5px;border-left:3px solid var(--blue);padding:3px 0 3px 10px;margin:0}
+.note b{color:var(--blue)}
+.note.ok{border-left-color:var(--green)} .note.ok b{color:var(--green)}
+.note.ng{border-left-color:var(--red)} .note.ng b{color:var(--red)}
+.pick{display:flex;flex-wrap:wrap;gap:6px}
+.pick button{font-family:var(--f-en);font-size:16px;font-weight:600;border:1.5px solid var(--ink);background:var(--card);border-radius:7px;padding:3px 14px;cursor:pointer}
+.pick button:hover{background:var(--grid)}
+.pick button.ok{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.pick button.ng{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.steps span{border:1px solid var(--line);border-radius:999px;padding:0 9px}
+.steps span.on{border-color:var(--red);color:var(--red);font-weight:700}
+.steps span.done{border-color:var(--green);color:var(--green)}
+.gen{display:flex;flex-direction:column;gap:6px}
+.gen .g{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 10px}
+.gen .g .tg{font-size:11px;font-weight:700;color:var(--card);background:var(--blue);border-radius:4px;padding:0 7px;white-space:nowrap}
+.gen .g .tg.o{background:var(--orange)} .gen .g .tg.r{background:var(--red)} .gen .g .tg.v{background:var(--violet)} .gen .g .tg.gr{background:var(--green)}
+.gen .g .en{font-size:17px;min-width:0}
+.bars{display:flex;align-items:flex-end;gap:16px;height:200px;padding:0 10px;border-bottom:2px solid var(--ink)}
+.bars .b{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.bars .b i{display:block;width:100%;border-radius:6px 6px 0 0;background:var(--blue);transition:height .35s}
+.bars .b.top i{background:var(--red)}
+.bars .b span{font-family:var(--f-num);font-size:12.5px;font-weight:700}
+.bnames{display:flex;gap:16px;padding:0 10px}
+.bnames span{flex:1;max-width:110px;text-align:center;font-size:12.5px;font-weight:700}
+.svgbox{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+.svgbox svg{display:block;width:100%;height:auto}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center}
+.vs .box{border:2px solid var(--blue);background:var(--blue-soft);color:var(--blue);border-radius:8px;padding:10px;text-align:center;font-weight:700;min-width:0}
+.vs .box.ng{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.vs .box.ok{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.vs .mid{font-family:var(--f-num);font-weight:700;font-size:20px}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;position:relative}
+.ladder div{border:1.5px solid var(--line);border-radius:7px;padding:6px 4px;text-align:center;font-size:12.5px;font-weight:700;color:var(--muted);background:var(--card);transition:all .35s}
+.ladder div.real{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+.ladder div.imag{border-color:var(--red);color:var(--card);background:var(--red)}
+.gauge{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--blue-soft),var(--red-soft));border:1px solid var(--line);position:relative}
+.gauge i{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;background:var(--red);border:2.5px solid var(--card);box-shadow:0 0 0 1.5px var(--ink);transition:left .35s;transform:translateX(-50%)}
+.gauge-l{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+
+/* quiz */
+.qlist{display:flex;flex-direction:column;gap:12px}
+.q{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.q-h{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:4px;flex-wrap:wrap}
+.q-h .st{margin-left:auto;font-weight:700}
+.q-h .st.ok{color:var(--green)} .q-h .st.ng{color:var(--red)}
+.lvp{font-size:11.5px;font-weight:700;padding:0 8px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap;line-height:1.6}
+.lv-jugyo{color:var(--green)} .lv-teiki{color:var(--blue)} .lv-nyushi{color:var(--orange)} .lv-kyotsu{color:var(--violet)}
+.q-h .ty{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 6px}
+.q p.qt{margin:0 0 8px;font-size:15px}
+.q p.qt .en{font-size:17px;line-height:1.7}
+.q p.qt .ctx{display:block;background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:6px 10px;margin:4px 0;font-family:var(--f-en);font-size:16px;line-height:1.7}
+.chs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px}
+.ch{display:flex;gap:8px;align-items:flex-start;text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:14.5px;line-height:1.5}
+.ch .tx{min-width:0}
+.ch .tx.en{font-size:16px}
+.ch:hover{border-color:var(--ink)}
+.ch .mk{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--red);color:var(--red);display:grid;place-items:center;font-family:var(--f-num);font-size:12px;font-weight:700;margin-top:1px}
+.ch.sel .mk{background:var(--red);color:var(--card)}
+.ch.right{border-color:var(--green);background:var(--green-soft)}
+.ch.wrong{border-color:var(--red);background:var(--red-soft)}
+.ex{margin-top:8px;font-size:14px;border-left:3px solid var(--blue);padding:4px 0 4px 10px}
+.ex b{color:var(--blue)}
+.ex .en{font-size:15.5px}
+.oarea{min-height:46px;border:1.5px dashed var(--line);border-radius:8px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--paper)}
+.oarea.ok{border-style:solid;border-color:var(--green);background:var(--green-soft)}
+.oarea.ng{border-style:solid;border-color:var(--red);background:var(--red-soft)}
+.oarea .ph{font-size:12.5px;color:var(--muted)}
+.opool{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.oc{font-family:var(--f-en);font-size:16px;border:1.5px solid var(--ink);background:var(--card);border-radius:7px;padding:2px 11px;cursor:pointer;line-height:1.5}
+.oc:hover{background:var(--grid)}
+.oc.used{visibility:hidden}
+.filters{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.filters .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.filters .row > span{font-size:12px;color:var(--muted);font-weight:700;width:52px}
+.chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:2px 11px;font-size:12.5px;font-weight:700;cursor:pointer}
+.chip.on{border-color:var(--ink);background:var(--ink);color:var(--card)}
+.count{font-size:13px;color:var(--muted);margin:0 0 8px}
+.lvguide{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:8px 0 4px}
+.lvguide div{background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}
+.lvguide div b{display:block;font-family:var(--f-display);font-size:14.5px}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.fc{perspective:900px;height:170px;cursor:pointer;border:0;background:none;padding:0;text-align:left}
+.fc .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.fc.flip .in{transform:rotateY(180deg)}
+.fc .fa,.fc .fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.fc .fa{background:var(--card);border:1.5px solid var(--ink)}
+.fc .fb{background:var(--ink);color:var(--card);transform:rotateY(180deg)}
+.fc .fa small,.fc .fb small{font-size:11px;letter-spacing:.06em;opacity:.7}
+.fc .fa b{font-family:var(--f-display);font-size:18px;margin-top:auto;margin-bottom:auto}
+.fc .fb .f{font-family:var(--f-en);font-size:17px;font-weight:700;color:var(--card);line-height:1.4}
+.fc .fb p{margin:0;font-size:12.5px;line-height:1.55}
+.fc .fb p .en{font-size:13.5px}
+@media (prefers-reduced-motion:reduce){.fc .in{transition:none}}
+
+/* glossary */
+.gsearch{width:100%;border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px;background:var(--card);font-size:15px;margin-bottom:12px}
+.gl-k{font-family:var(--f-display);font-weight:900;font-size:16px;margin:16px 0 6px;color:var(--red)}
+.gl dl{margin:0;display:grid;grid-template-columns:minmax(8em,max-content) minmax(0,1fr);gap:0;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
+.gl dt,.gl dd{margin:0;padding:8px 12px;border-bottom:1px solid var(--line);font-size:14px}
+.gl dt{font-weight:700}
+.gl dt small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+.gl dd a{font-size:12px}
+.gl dd .en{font-size:15px}
+@media (max-width:520px){.gl dl{grid-template-columns:1fr}.gl dt{border-bottom:0;padding-bottom:0}}
+
+.guide{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:8px 18px 14px}
+.guide h3{font-size:16px;margin:14px 0 4px}
+.guide p,.guide li{font-size:14.5px;max-width:42em}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:28px;flex-wrap:wrap}
+.pager a{flex:1 1 220px;text-decoration:none;color:var(--ink);border:1.5px solid var(--ink);border-radius:var(--r);padding:10px 14px;background:var(--card)}
+.pager a small{display:block;color:var(--muted);font-size:11.5px}
+.pager a.nx{text-align:right}
+.modal{position:fixed;inset:0;background:rgba(10,15,20,.45);display:grid;place-items:center;z-index:50;padding:16px}
+.modal .box{background:var(--card);border:2px solid var(--ink);border-radius:12px;max-width:380px;width:100%;padding:18px;display:flex;flex-direction:column;gap:10px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--card);padding:8px 16px;border-radius:999px;font-weight:700;font-size:13.5px;z-index:60;box-shadow:0 6px 18px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#home" data-go="home"><span>英文法 ラボ</span><small>関係詞・比較・仮定法</small></a>
+    <div class="rank" aria-live="polite">
+      <span class="rank-name" id="rankName">単語レベル</span>
+      <div class="rank-bar" aria-hidden="true"><i id="rankBar"></i></div>
+      <span class="rank-rate">達成率 <b id="rankRate">0</b>%</span>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <a href="#home" data-go="home">ホーム</a>
+    <a href="#rel" data-go="rel">関係詞</a>
+    <a href="#comp" data-go="comp">比較</a>
+    <a href="#subj" data-go="subj">仮定法</a>
+    <a href="#drill" data-go="drill">問題演習</a>
+    <a href="#cards" data-go="cards">構文カード</a>
+    <a href="#glossary" data-go="glossary">用語集</a>
+    <a href="#guide" data-go="guide">使い方</a>
+  </nav>
+</header>
+<main id="app">
+  <div class="loading"><b>読み込み中です…</b><br>この文章が表示されたまま変わらない場合は、プログラムが動いていません。ファイルをパソコンに保存してから Chrome や Edge で開いてください。Googleサイトに貼り付けた場合は、貼り付けたコードが最後（&lt;/html&gt;）まで入っているか確認してください。</div>
+</main>
+<footer class="foot">
+  <p>問題・例文はすべてこの教材のためのオリジナルです。高校の英語（英語コミュニケーション・論理・表現）で学ぶ「関係詞」「比較」「仮定法」を扱っています。</p>
+  <p>学習の記録はこの端末のブラウザにだけ保存されます。</p>
+</footer>
+
+<script>
+// ===== 共通ヘルパー =====
+const $ = (s, r = document) => r.querySelector(s);
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c.nodeType ? c : document.createTextNode(c));
+  return el;
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const REDUCED = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } })();
+// {語句|クラス} を色つきの語に変える小さな記法
+function M(s) { return String(s).replace(/\{([^{}|]+)\|([\w ]+)\}/g, '<span class="w $2">$1</span>'); }
+function E(s, cls) { return h('div', { class: 'sent' + (cls ? ' ' + cls : ''), html: M(s) }); }
+// 文字列からいつも同じ乱数列（選択肢の並びを固定するため）
+function seeded(str) { let x = 2166136261; for (const c of str) { x ^= c.charCodeAt(0); x = Math.imul(x, 16777619); } return () => { x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x >>> 0) % 100000) / 100000; }; }
+function shuffled(arr, key) { const r = seeded(key); const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+// ---- 操作パーツ ----
+function slider(parent, o, on) {
+  const id = 'sl-' + o.id;
+  const out = h('span', { class: 'num' });
+  const inp = h('input', { type: 'range', id, min: o.min, max: o.max, step: o.step, value: o.value });
+  const show = () => { out.textContent = (o.fmt ? o.fmt(+inp.value) : inp.value) + (o.unit ? ' ' + o.unit : ''); };
+  inp.addEventListener('input', () => { show(); on && on(+inp.value); });
+  parent.append(h('div', { class: 'sl' }, h('label', { for: id }, h('span', null, o.label), out), inp));
+  show();
+  return { get v() { return +inp.value; }, set v(x) { inp.value = x; show(); }, el: inp };
+}
+function seg(parent, items, value, on) {
+  const box = h('div', { class: 'seg', role: 'group' });
+  const bs = items.map(([v, label]) => {
+    const b = h('button', { type: 'button', class: v === value ? 'on' : '', 'aria-pressed': v === value ? 'true' : 'false' }, label);
+    b.addEventListener('click', () => { set(v); on && on(v); });
+    box.append(b); return [v, b];
+  });
+  function set(v) { value = v; bs.forEach(([x, b]) => { b.classList.toggle('on', x === v); b.setAttribute('aria-pressed', x === v); }); }
+  parent.append(box);
+  return { get v() { return value; }, set };
+}
+function check(parent, id, label, val, on) {
+  const inp = h('input', { type: 'checkbox', id: 'ck-' + id });
+  inp.checked = !!val;
+  inp.addEventListener('change', () => on && on(inp.checked));
+  parent.append(h('label', { class: 'chk', for: 'ck-' + id }, inp, label));
+  return { get v() { return inp.checked; }, set v(x) { inp.checked = !!x; } };
+}
+function btn(parent, label, on, pri) {
+  const b = h('button', { type: 'button', class: 'btn' + (pri ? ' pri' : '') }, label);
+  b.addEventListener('click', on); parent.append(b); return b;
+}
+function note(html, kind) { return h('p', { class: 'note' + (kind ? ' ' + kind : ''), html }); }
+
+// ---- マスコット：ブン博士（開いた本） ----
+function bunSVG() {
+  return `<svg viewBox="0 0 64 64" aria-hidden="true">
+  <path d="M5 17q13.5-6 27 1.5q13.5-7.5 27-1.5v35q-13.5-6-27 1.5q-13.5-7.5-27-1.5z" fill="var(--blue-soft)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M32 18.5v35" stroke="var(--ink)" stroke-width="2" opacity=".45"/>
+  <path d="M46 14v13l3.2-3.2 3.2 3.2V14.6z" fill="var(--red)"/>
+  <circle cx="21" cy="33" r="6.2" fill="var(--card)" stroke="var(--ink)" stroke-width="2.2"/>
+  <circle cx="42" cy="33" r="6.2" fill="var(--card)" stroke="var(--ink)" stroke-width="2.2"/>
+  <path d="M27.2 33h8.6" stroke="var(--ink)" stroke-width="2.2"/>
+  <circle cx="22" cy="33.5" r="2.2" fill="var(--ink)"/><circle cx="43" cy="33.5" r="2.2" fill="var(--ink)"/>
+  <path d="M26 45q5.5 4 11 0" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>`;
+}
+function say(html, who = 'ブン博士') {
+  return h('div', { class: 'say' }, h('span', { html: bunSVG() }), h('div', { class: 'bubble' }, h('b', { class: 'who' }, who), h('span', { html: M(html) })));
+}
+let toastT = 0;
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const t = h('div', { class: 'toast', role: 'status' }, msg); document.body.append(t);
+  clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 2400);
+}
+
+// ===== 単元データ =====
+const PARTS = {
+  rel: { name: '関係詞', tag: 'PART 1', lead: '名詞に「うしろから説明」をくっつける。2つの文を1つにつなぐ道具です。' },
+  comp: { name: '比較', tag: 'PART 2', lead: '「同じくらい」「〜より」「いちばん」。2つ以上のものをくらべる言い方と重要構文。' },
+  subj: { name: '仮定法', tag: 'PART 3', lead: '現実とはちがう想像を、時制を1つ過去にずらして表す。英語ならではの「距離」の感覚。' }
+};
+const LEVELS = [
+  ['jugyo', '授業', '形と意味の確認。まずはここから。'],
+  ['teiki', '定期試験', '空所補充・書きかえ・並べかえ。'],
+  ['nyushi', '大学入試', '私大・国公立でよく出る文法・語法と並べかえ。'],
+  ['kyotsu', '共通テスト', '会話や短い文の中で、意味をつかむ問題。']
+];
+const LVNAME = Object.fromEntries(LEVELS.map(l => [l[0], l[1]]));
+
+const UNITS = [
+  { id: 'u1', part: 'rel', no: '1', title: '関係代名詞の基本', labs: ['merge', 'post'],
+    say: '英語は、名詞の説明を<b>うしろ</b>につなげる言葉じゃ。{the book|ant} {I bought yesterday|cl} のように、名詞のあとに説明のかたまりが続く。そのつなぎ役が関係代名詞なのじゃ。',
+    points: [
+      ['関係代名詞は「接続詞＋代名詞」の2役。前の名詞（<b>先行詞</b>）に、うしろから説明をつなぐ。', '名詞 ← 関係詞 ＋ 説明'],
+      ['先行詞が人なら who、物・動物なら which。that はどちらにも使える。', 'who / which / that'],
+      ['<b>主格</b>：関係詞のすぐ後ろに動詞が続く。<span class="en">a girl who plays tennis</span>', 'who / which ＋ 動詞'],
+      ['<b>目的格</b>：後ろが「主語＋動詞」で、目的語が欠けている。目的格は省略できる。<span class="en">the book (which) I bought</span>', '(which / whom) ＋ S ＋ V'],
+      ['<b>所有格</b>：後ろに冠詞のない名詞が続く。<span class="en">a boy whose father is a pilot</span>', 'whose ＋ 名詞'],
+      ['先行詞に the only / the first / 最上級 / all などがつくとき、また「人＋物」のときは that が好まれる。', 'the only ~ that']
+    ] },
+  { id: 'u2', part: 'rel', no: '2', title: '関係副詞と what', labs: ['hole', 'what'],
+    say: '関係代名詞か関係副詞かは、うしろの文に<b>穴</b>（欠けている名詞）があるかどうかで決まる。先行詞が場所だから where、とはかぎらないぞ。穴さがしの目をきたえるのじゃ。',
+    points: [
+      ['関係副詞 where / when / why / how の後ろは<b>完全な文</b>（名詞の欠けがない）。', '関係副詞 ＋ 完全な文'],
+      ['関係代名詞の後ろは<b>不完全な文</b>（主語・目的語・前置詞の後ろの名詞が欠けている）。', '関係代名詞 ＋ 穴のある文'],
+      ['関係副詞は「前置詞＋which」と同じ。<span class="en">the house where I live ＝ the house in which I live</span>', 'where ＝ in which'],
+      ['why の先行詞は the reason。how は the way とどちらか一方だけを使う（the way how は✕）。', 'the way / how'],
+      ['<b>what</b> は先行詞をふくむ関係代名詞。「〜すること・もの」。<span class="en">what I want ＝ the thing which I want</span>', 'what ＝ the thing which'],
+      ['That\'s why ～「そういうわけで～」、That\'s where ～「そこが～の場所だ」も会話でよく使う。', 'That\'s why S V']
+    ] },
+  { id: 'u3', part: 'rel', no: '3', title: '非制限用法・前置詞＋関係詞・-ever', labs: ['comma', 'ever'],
+    say: 'コンマ1つで意味が変わるのが関係詞のおもしろいところじゃ。コンマがあれば「ちなみに〜」の補足説明。人数や数の受け取り方まで変わるから、絵で確かめるのじゃ。',
+    points: [
+      ['<b>非制限用法</b>：コンマ＋関係詞で、先行詞に<b>補足説明</b>を加える。「そして〜」「ちなみに〜」。', ', who / , which'],
+      ['非制限用法では that は使えない。', ', that は✕'],
+      ['<span class="en">, which</span> は前の文の内容全体を受けることができる。<span class="en">He said nothing, which made her angry.</span>', ', which ＝ 前の内容'],
+      ['前置詞＋関係代名詞：<span class="en">the house in which I live</span>。前置詞の直後に that は置けない。', '前置詞 ＋ which / whom'],
+      ['複合関係代名詞 whoever / whatever / whichever：「〜する人は誰でも」「〜するものは何でも」。', 'whoever ＝ anyone who'],
+      ['譲歩の -ever：「たとえ誰が（何が・どこへ・どんなに）〜しても」。no matter ＋ 疑問詞 と同じ。', 'however ＋ 形容詞 ＋ S V']
+    ] },
+  { id: 'u4', part: 'comp', no: '4', title: '原級・比較級・最上級', labs: ['scale'],
+    say: '比較は「物差し」の感覚じゃ。2本のタワーの高さを変えて、言える英文がどう変わるか見てみよう。「〜倍」の言い方は as と as のあいだに注目じゃ。',
+    points: [
+      ['as ＋ 原級 ＋ as「同じくらい〜」。否定 not as(so) ～ as「…ほど〜ない」。', 'as tall as'],
+      ['比較級 ＋ than「…より〜」。短い語は -er、長い語は more ～。', 'taller than / more ~ than'],
+      ['the ＋ 最上級「いちばん〜」。of ＋ 複数（of the five）、in ＋ 範囲（in the class）。', 'the tallest of / in'],
+      ['比較級を強めるのは much / far / even / still。very は使えない。', 'much taller'],
+      ['倍数表現：X times as ～ as。2倍は twice、半分は half。', 'twice as tall as'],
+      ['不規則変化：good / well → better → best、bad → worse → worst、many / much → more → most、little → less → least。', 'better / best']
+    ] },
+  { id: 'u5', part: 'comp', no: '5', title: '比較の重要構文', labs: ['themore', 'nomore'],
+    say: 'no more than と not more than。見た目はそっくりじゃが、no は「差がゼロ」、not は「それ以上ではない」。数直線にすると、ちがいがひと目でわかるぞ。',
+    points: [
+      ['the ＋ 比較級 ～, the ＋ 比較級 …「〜すればするほど…」。', 'The more ~, the more …'],
+      ['比較級 and 比較級「ますます〜」。', 'colder and colder'],
+      ['<b>no more than</b> ＝ only「たった〜」（少ない気持ち）。<b>no less than</b> ＝ as much / many as「〜も」（多い気持ち）。', 'no more than ＝ only'],
+      ['<b>not more than</b> ＝ at most「せいぜい・多くても」。<b>not less than</b> ＝ at least「少なくとも」。', 'not more than ＝ at most'],
+      ['A is no more B than C is D「AがBでないのは、CがDでないのと同じ」（クジラの構文）。', 'A is no more B than C is D'],
+      ['not so much A as B「AというよりむしろB」。', 'not so much A as B']
+    ] },
+  { id: 'u6', part: 'comp', no: '6', title: '最上級の言いかえと比較の注意点', labs: ['rank', 'match'],
+    say: '「いちばん」は最上級を使わなくても言える。比較級や原級で書きかえる問題は定期試験でも入試でも定番じゃ。それから、<b>くらべるもの同士をそろえる</b>こと。これを忘れると、人口と都市をくらべるおかしな文になるぞ。',
+    points: [
+      ['最上級の言いかえ：No other ～ is as 原級 as A ／ No other ～ is 比較級 than A ／ A is 比較級 than any other ～。', 'than any other ＋ 単数'],
+      ['any other の後ろは<b>単数</b>名詞。all the other の後ろは複数名詞。', 'any other student'],
+      ['くらべる対象をそろえる。同じ名詞のくり返しは that（単数）／ those（複数）で受ける。', 'that of / those of'],
+      ['ラテン比較級は than ではなく to：superior to / inferior to / senior to / junior to / prefer A to B。', 'superior to'],
+      ['the ＋ 比較級 ＋ of the two「2つのうち〜なほう」。2つでも the がつく。', 'the taller of the two'],
+      ['one of the ＋ 最上級 ＋ <b>複数</b>名詞「最も〜なものの1つ」。', 'one of the best players']
+    ] },
+  { id: 'u7', part: 'subj', no: '7', title: '仮定法過去・仮定法過去完了', labs: ['dial', 'distance'],
+    say: '仮定法のカギは「<b>時制を1つ過去にずらす</b>」ことじゃ。今のことを想像するなら過去形、過去のことを想像するなら過去完了。過去形は「現実からの距離」を表すしるしなのじゃ。',
+    points: [
+      ['仮定法は「現実とちがう想像」。時制を1つ過去にずらして、現実との<b>距離</b>を出す。', '時制を1つ過去へ'],
+      ['<b>仮定法過去</b>（今の事実の反対）：If S ＋ 過去形, S would / could / might ＋ 原形。', 'If S 過去形, S would 原形'],
+      ['be動詞は主語にかかわらず were が基本（会話では was も使われる）。', 'If I were you'],
+      ['<b>仮定法過去完了</b>（過去の事実の反対）：If S had ＋ 過去分詞, S would have ＋ 過去分詞。', 'If S had p.p., S would have p.p.'],
+      ['起こりうることの条件は<b>直説法</b>。<span class="en">If it rains tomorrow, I will stay home.</span>（if節は現在形）', 'If it rains, I will …'],
+      ['過去形の「距離」はていねいさにも使う。<span class="en">Could you ～?</span> は Can you ～? よりていねい。', 'Could you ~?']
+    ] },
+  { id: 'u8', part: 'subj', no: '8', title: 'I wish・as if・混合仮定法', labs: ['mixed', 'wish'],
+    say: 'if節と主節は、いつも同じ時のこととはかぎらん。「あのとき〜していれば、<b>今ごろ</b>…」のように、過去の条件と今の結果を組み合わせることもある。時間の線の上で考えるのじゃ。',
+    points: [
+      ['I wish ＋ 仮定法過去「（今）〜ならいいのに」。<span class="en">I wish I had a dog.</span>', 'I wish S 過去形'],
+      ['I wish ＋ 仮定法過去完了「（あのとき）〜だったらよかったのに」。', 'I wish S had p.p.'],
+      ['as if ＋ 仮定法「まるで〜のように」。主節と同じ時なら過去形、主節より前なら過去完了。', 'as if S 過去形 / had p.p.'],
+      ['<b>混合仮定法</b>：過去の条件＋今の結果。<span class="en">If I had taken the medicine, I would feel better now.</span>', 'If S had p.p., S would 原形 now'],
+      ['It is time ＋ S ＋ 過去形「もう〜する時間だ（まだしていない）」。', 'It\'s time you went to bed.'],
+      ['If only ～! は I wish をさらに強めた言い方「〜でありさえすれば」。', 'If only S 過去形 / had p.p.']
+    ] },
+  { id: 'u9', part: 'subj', no: '9', title: 'if の省略・without・were to / should', labs: ['invert', 'without'],
+    say: 'if を消すと、were / had / should が文の先頭に飛び出す。これが倒置じゃ。入試では if のない仮定法がよくねらわれる。「if がないのに would がある」と気づけたら一人前じゃ。',
+    points: [
+      ['if を省略すると倒置になる：If I were → <b>Were I</b>、If I had known → <b>Had I known</b>、If you should → <b>Should you</b>。', 'Had I known ~, …'],
+      ['Without ～ / But for ～「〜がなければ（なかったら）」。今のことにも過去のことにも使える。', 'Without ~, S would …'],
+      ['If it were not for ～（今）／ If it had not been for ～（過去）。倒置すると Were it not for ～ / Had it not been for ～。', 'If it were not for ~'],
+      ['If S were to ＋ 原形「仮に〜するとしたら」。未来の仮定。実現の可能性にかかわらず使える。', 'If S were to 原形'],
+      ['If S should ＋ 原形「万一〜したら」。主節は命令文や will も使える。', 'If S should 原形, 命令文'],
+      ['otherwise「そうでなければ」は前の文の内容を受けて仮定を表す。', '…; otherwise, S would …']
+    ] }
+];
+
+// ===== 感覚ラボ =====
+const LABS = {};
+const PUNCT = /^[.,!?;]$/;
+function joinTokens(tokens, fn) {
+  const frag = document.createDocumentFragment();
+  tokens.forEach((t, k) => { if (k > 0 && !PUNCT.test(t)) frag.append(' '); frag.append(fn(t, k)); });
+  return frag;
+}
+
+// ---------- 1-A 2つの文を1つにつなぐ ----------
+LABS.merge = {
+  title: '2つの文を1つにつなぐ',
+  tryText: '① 文2の中から、文1の<b>青い名詞と同じもの</b>を指す語をタップ。② その語をどの関係代名詞に変えるか選ぼう。2つの文が1つにくっつきます。',
+  why: '関係代名詞は「接続詞＋代名詞」の2役。文2の代名詞（he / it / her など）を関係代名詞に変えて、先行詞のすぐ後ろへ運ぶ。<b>he</b>（主語）なら who、<b>it・him</b>（目的語）なら which・whom、<b>her</b>（〜の）なら whose。もとの代名詞の役割が、そのまま関係代名詞の「格」になるのじゃ。',
+  build(p, touch) {
+    const D = [
+      { a: ['I', 'have', 'a', 'friend', '.'], ant: [2, 3], b: ['He', 'lives', 'in', 'Canada', '.'], p: 0, ok: ['who'], why: 'He は文の主語（〜は）。人で主語なので who（主格）。', cs: '主格',
+        res: 'I have {a friend|ant} {who|rel} {lives in Canada|cl}.', jp: '私にはカナダに住んでいる友だちがいる。', note: 'who のすぐ後ろに動詞 lives が続く。これが主格のしるし。' },
+      { a: ['This', 'is', 'the', 'book', '.'], ant: [2, 3], b: ['I', 'bought', 'it', 'yesterday', '.'], p: 2, ok: ['which'], why: 'it は bought の目的語（〜を）。物で目的語なので which（目的格）。', cs: '目的格',
+        res: 'This is {the book|ant} {(which)|rel} {I bought|cl} {＿|hit} {yesterday|cl}.', jp: 'これは私が昨日買った本だ。', note: 'it が which になって前へ移動したので、bought の後ろに「穴」ができる。目的格の which / that は省略できる。' },
+      { a: ['I', 'know', 'a', 'girl', '.'], ant: [2, 3], b: ['Her', 'mother', 'is', 'a', 'doctor', '.'], p: 0, ok: ['whose'], why: 'Her は「彼女の」という所有の形。所有なら人でも物でも whose。', cs: '所有格',
+        res: 'I know {a girl|ant} {whose|rel} {mother is a doctor|cl}.', jp: '私は母親が医者である少女を知っている。', note: 'Her mother → whose mother。whose の後ろには冠詞のない名詞が続く。' },
+      { a: ['The', 'cake', 'was', 'delicious', '.'], ant: [0, 1], b: ['My', 'sister', 'made', 'it', '.'], p: 3, ok: ['which'], why: 'it は made の目的語。物で目的語なので which。', cs: '目的格',
+        res: '{The cake|ant} {(which)|rel} {my sister made|cl} was delicious.', jp: '姉が作ったケーキはおいしかった。', note: '先行詞が文の主語のときは、関係詞のかたまりが文の<b>真ん中</b>に入りこむ。was の前までが長い主語。' },
+      { a: ['The', 'man', 'is', 'my', 'uncle', '.'], ant: [0, 1], b: ['You', 'met', 'him', 'at', 'the', 'station', '.'], p: 2, ok: ['whom', 'who'], why: 'him は met の目的語。人で目的語なので whom（話し言葉では who も使う）。', cs: '目的格',
+        res: '{The man|ant} {(whom)|rel} {you met at the station|cl} is my uncle.', jp: 'あなたが駅で会った男性は私のおじだ。', note: 'whom はかたい言い方。ふだんは who や that を使うか、省略することが多い。' }
+    ];
+    let i = 0, step = 1;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, '例' + (k + 1)]), 0, v => { i = v; step = 1; draw(); });
+    const stp = h('div', { class: 'steps' }), bench = h('div', { class: 'bench' }), out = h('div', { class: 'bench', style: 'background:var(--card)' });
+    p.append(stp, bench, out);
+    function draw() {
+      const d = D[i];
+      stp.innerHTML = `<span class="${step === 1 ? 'on' : 'done'}">① 同じものを指す語</span><span class="${step === 2 ? 'on' : step > 2 ? 'done' : ''}">② 関係代名詞を選ぶ</span><span class="${step > 2 ? 'done' : ''}">③ 1文にする</span>`;
+      bench.innerHTML = '';
+      const s1 = h('div', { class: 'sent' }, h('span', { class: 'lbl' }, '文1　'));
+      s1.append(joinTokens(d.a, (t, k) => h('span', { class: 'w' + (k >= d.ant[0] && k <= d.ant[1] ? ' ant' : '') }, t)));
+      const s2 = h('div', { class: 'sent' }, h('span', { class: 'lbl' }, '文2　'));
+      const spans = [];
+      s2.append(joinTokens(d.b, (t, k) => {
+        if (PUNCT.test(t)) return h('span', { class: 'w' }, t);
+        const cls = 'w' + (step === 1 ? ' tap' : '') + (step > 1 && k === d.p ? ' hit' : '');
+        const sp = h(step === 1 ? 'button' : 'span', { class: cls, type: step === 1 ? 'button' : null, style: step === 1 ? 'font:inherit;background:none' : null }, t);
+        if (step === 1) sp.addEventListener('click', () => {
+          if (k === d.p) { step = 2; draw(); }
+          else { sp.classList.add('ng'); out.innerHTML = ''; out.append(note('<b>ちがうぞ。</b>文1の「' + d.a.slice(d.ant[0], d.ant[1] + 1).join(' ') + '」と同じ人・物を指す語をさがそう。代名詞（he / it / her など）が目印じゃ。', 'ng')); }
+        });
+        spans.push(sp); return sp;
+      }));
+      bench.append(s1, s2);
+      out.innerHTML = '';
+      if (step === 1) { out.append(h('p', { class: 'jpline', style: 'margin:0' }, '文2の語をタップしよう。')); return; }
+      if (step === 2) {
+        out.append(h('p', { class: 'jpline', style: 'margin:0' }, '「' + d.b[d.p] + '」を何に変える？'));
+        const pk = h('div', { class: 'pick' }); out.append(pk);
+        const msg = h('div'); out.append(msg);
+        ['who', 'which', 'whose', 'whom'].forEach(w => {
+          const b = h('button', { type: 'button' }, w);
+          b.addEventListener('click', () => {
+            if (d.ok.includes(w)) { step = 3; draw(); }
+            else { b.classList.add('ng'); msg.innerHTML = ''; msg.append(note('<b>おしい。</b>' + d.why, 'ng')); }
+          });
+          pk.append(b);
+        });
+        return;
+      }
+      out.append(h('div', { class: 'lbl' }, '1文にすると（' + d.cs + '）'), E(d.res, 'pop'), h('div', { class: 'jpline' }, d.jp), note('<b>' + d.cs + '：</b>' + d.note, 'ok'));
+      const nb = h('div', { class: 'btns' }); out.append(nb);
+      if (i < D.length - 1) btn(nb, '次の例へ →', () => { i++; step = 1; top.firstChild.querySelectorAll('button').forEach((b, k) => b.classList.toggle('on', k === i)); draw(); });
+      touch();
+    }
+    draw();
+  }
+};
+
+// ---------- 1-B うしろから説明する ----------
+LABS.post = {
+  title: '名詞をうしろから説明する',
+  tryText: '説明のしかたを切りかえて、<b>英語と日本語で「説明」と「名詞」の順番</b>がどうちがうか見くらべよう。1語だけの説明のときはどうなる？',
+  why: '日本語は説明を<b>名詞の前</b>に置くが、英語は2語以上のかたまりを<b>名詞の後ろ</b>に置く（後置修飾）。だから英文を読むときは「名詞 → どんな？」と前から順に理解すればよい。関係詞は、この「うしろからの説明」に<b>主語と動詞をもった文</b>を使いたいときの道具なのじゃ。',
+  build(p, touch) {
+    const D = [
+      ['形容詞1語', 'pre', 'a {black|cl} {cat|ant}', '{黒い|cl}{ネコ|ant}', 'black', 'cat', '1語の説明は日本語と同じく前に置く。'],
+      ['前置詞句', 'post', 'a {cat|ant} {on the sofa|cl}', '{ソファの上の|cl}{ネコ|ant}', 'on the sofa', 'a cat', '2語以上のかたまりになると後ろへ。'],
+      ['分詞', 'post', 'a {cat|ant} {sleeping on the sofa|cl}', '{ソファの上で寝ている|cl}{ネコ|ant}', 'sleeping on the sofa', 'a cat', '-ing（〜している）も後ろから。'],
+      ['関係代名詞（主格）', 'post', 'a {cat|ant} {that is sleeping on the sofa|cl}', '{ソファの上で寝ている|cl}{ネコ|ant}', 'that is sleeping on the sofa', 'a cat', '主語＋動詞のある「文」で説明したいとき関係詞を使う。'],
+      ['関係代名詞（目的格）', 'post', 'a {cat|ant} {(that) my aunt gave me|cl}', '{おばが私にくれた|cl}{ネコ|ant}', '(that) my aunt gave me', 'a cat', 'gave me の後ろの「ネコを」が抜けて、穴になっている。'],
+      ['所有格 whose', 'post', 'a {cat|ant} {whose eyes are blue|cl}', '{目が青い|cl}{ネコ|ant}', 'whose eyes are blue', 'a cat', 'その名詞の「〜の」を説明する。']
+    ];
+    let i = 3;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, d[0]]), i, v => { i = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function row(label, items) {
+      return h('div', { style: 'display:flex;gap:8px;align-items:center;flex-wrap:wrap' }, h('span', { class: 'lbl', style: 'width:4.5em' }, label),
+        ...items.map(([t, k]) => h('span', { class: 'w ' + (k === 'n' ? 'ant' : 'cl'), style: 'padding:4px 10px;font-family:var(--f-en);font-size:17px' }, t)),
+        h('span', { class: 'jpline' }, items[0][1] === 'n' ? '名詞 ← 説明' : '説明 → 名詞'));
+    }
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'lbl' }, '英語'), E(d[2], 'pop'), h('div', { class: 'lbl' }, '日本語'), h('div', { class: 'sent', html: M(d[3]), style: 'font-family:var(--f-body)' }));
+      bench.append(h('div', { style: 'border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px' },
+        row('英語の順', d[1] === 'pre' ? [[d[4], 'd'], [d[5], 'n']] : [[d[5], 'n'], [d[4], 'd']]),
+        row('日本語の順', [[d[3].replace(/\{([^|]+)\|cl\}.*/, '$1'), 'd'], ['ネコ', 'n']])),
+        note(d[6]));
+    }
+    draw();
+  }
+};
+
+// ---------- 2-A 穴さがし ----------
+LABS.hole = {
+  title: '穴さがし：関係代名詞か関係副詞か',
+  tryText: '空所のうしろの文に<b>名詞が欠けている場所（穴）</b>があれば、その位置の □ をタップ。どこにも穴がなければ「穴なし」を押そう。',
+  why: '関係代名詞は、うしろの文の中で主語や目的語の<b>代わり</b>をしている。だから関係代名詞を使うと、うしろの文に穴があく。関係副詞は副詞（そこで・そのとき）の代わりなので、うしろの文は<b>完全</b>なまま。先行詞が場所か時かではなく、<b>穴があるかないか</b>で見分けるのじゃ。',
+  build(p, touch) {
+    const D = [
+      { ant: 'This is the town', ws: ['I', 'was', 'born'], hole: -1, ans: 'where', res: 'This is {the town|ant} {where|rel} {I was born|cl}.', jp: 'ここは私が生まれた町だ。', note: 'I was born だけで文が完成している（完全な文）。だから関係副詞 where。where ＝ in which。' },
+      { ant: 'This is the town', ws: ['I', 'visited', 'last', 'year'], hole: 2, ans: 'which', res: 'This is {the town|ant} {which|rel} {I visited|cl} {＿|hit} {last year|cl}.', jp: 'ここは私が去年訪れた町だ。', note: 'visit は「〜を訪れる」で目的語が必要。visited の後ろに穴があるので関係代名詞 which / that。<b>先行詞が場所でも which</b> になる！' },
+      { ant: 'I remember the day', ws: ['we', 'first', 'met'], hole: -1, ans: 'when', res: 'I remember {the day|ant} {when|rel} {we first met|cl}.', jp: '私たちが初めて会った日を覚えている。', note: 'we first met で完成。時の先行詞＋完全な文なので when。' },
+      { ant: 'That was the day', ws: ['changed', 'my', 'life'], hole: 0, ans: 'which', res: 'That was {the day|ant} {which|rel} {＿|hit} {changed my life|cl}.', jp: 'それは私の人生を変えた日だった。', note: 'changed の主語がない（主語の穴）。だから関係代名詞 which / that。先行詞が「時」でも which。' },
+      { ant: 'Tell me the reason', ws: ['she', 'got', 'angry'], hole: -1, ans: 'why', res: 'Tell me {the reason|ant} {why|rel} {she got angry|cl}.', jp: '彼女が怒った理由を教えて。', note: 'she got angry で完成。the reason ＋ 完全な文なので why。' },
+      { ant: 'I can\'t believe the reason', ws: ['he', 'gave', 'us'], hole: 3, ans: 'which', res: 'I can\'t believe {the reason|ant} {which|rel} {he gave us|cl} {＿|hit}.', jp: '彼が私たちに言った理由は信じられない。', note: 'give 人 物 の「物」が欠けている。だから関係代名詞 which / that。the reason でも why とはかぎらない。' },
+      { ant: 'This is the house', ws: ['I', 'live', 'in'], hole: 3, ans: 'which', res: 'This is {the house|ant} {which|rel} {I live in|cl} {＿|hit}.', jp: 'これは私が住んでいる家だ。', note: '前置詞 in の後ろの名詞が欠けている。だから which / that。in を前に出して in which I live とも言える。' },
+      { ant: 'This is the house', ws: ['I', 'live'], hole: -1, ans: 'where', res: 'This is {the house|ant} {where|rel} {I live|cl}.', jp: 'これは私が住んでいる家だ。', note: 'live は目的語をとらない動詞なので I live で完成。だから where。ひとつ前の例と見くらべよう。in の有無で答えが変わる。' }
+    ];
+    let i = 0, done = false;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    const sg = seg(top, D.map((d, k) => [k, String(k + 1)]), 0, v => { i = v; done = false; draw(); });
+    const bench = h('div', { class: 'bench' }), out = h('div', { style: 'display:flex;flex-direction:column;gap:8px' });
+    p.append(bench, out);
+    function finish(ok, msg) {
+      out.innerHTML = '';
+      if (!ok) { out.append(note('<b>もう一度。</b>' + msg, 'ng')); return; }
+      done = true; const d = D[i];
+      out.append(E(d.res, 'pop'), h('div', { class: 'jpline' }, d.jp), note('<b>' + (d.hole < 0 ? '穴なし → 関係副詞 ' : '穴あり → 関係代名詞 ') + d.ans + '：</b>' + d.note, 'ok'));
+      const nb = h('div', { class: 'btns' }); out.append(nb);
+      if (i < D.length - 1) btn(nb, '次の文へ →', () => { i++; sg.set(i); done = false; draw(); });
+      touch(); drawBench();
+    }
+    function drawBench() {
+      const d = D[i]; bench.innerHTML = '';
+      const s = h('div', { class: 'sent' });
+      s.append(h('span', { class: 'w ant' }, d.ant), ' ', h('span', { class: 'w blank' }, done ? D[i].ans : '？'), ' ');
+      const mkGap = k => {
+        const g = h('button', { type: 'button', class: 'gapbtn' + (done && d.hole === k ? ' ok' : ''), 'aria-label': (k === 0 ? '先頭' : d.ws[k - 1] + ' の後ろ') + 'に穴がある', disabled: done ? true : null });
+        g.addEventListener('click', () => {
+          if (d.hole === k) finish(true);
+          else { g.classList.add('ng'); finish(false, d.hole < 0 ? 'この文はどこにも名詞が欠けていないかもしれないぞ。主語・動詞・目的語がそろっているか確かめよう。' : 'そこには穴はない。動詞や前置詞の後ろ、文の先頭（主語）をよく見よう。'); }
+        });
+        return g;
+      };
+      s.append(mkGap(0));
+      d.ws.forEach((w, k) => { s.append(' ', h('span', { class: 'w cl' }, w), ' ', mkGap(k + 1)); });
+      s.append('.');
+      bench.append(h('div', { class: 'lbl' }, 'うしろの文に穴はある？ □ は「ここに名詞が欠けている？」の候補'), s);
+      const nb = h('div', { class: 'btns' });
+      const b = btn(nb, '穴なし（完全な文）', () => { if (d.hole < 0) finish(true); else finish(false, 'どこかに名詞が欠けているぞ。動詞の後ろ（目的語）、前置詞の後ろ、文の先頭（主語）を見よう。'); });
+      if (done) b.disabled = true;
+      bench.append(nb);
+    }
+    function draw() { out.innerHTML = ''; drawBench(); }
+    draw();
+  }
+};
+
+// ---------- 2-B what は the thing which ----------
+LABS.what = {
+  title: 'what ＝ the thing which',
+  tryText: '「まとめる」を押して、<b>the thing which</b> が <b>what</b> 1語にちぢむところを見よう。もどして見くらべてもOK。',
+  why: 'what は「先行詞（the thing）」と「関係代名詞（which）」が1つになった語。だから what の前には先行詞がない。what のかたまりは文の中で<b>名詞</b>として、主語にも目的語にも補語にもなる。うしろの文に穴があるのは関係代名詞と同じじゃ。',
+  build(p, touch) {
+    const D = [
+      ["I can't believe {the thing which|relsoft} {he said|cl} {＿|hit}.", "I can't believe {what|rel} {he said|cl} {＿|hit}.", '彼が言ったことが信じられない。', '目的語'],
+      ['{The thing which|relsoft} {I want|cl} {＿|hit} is a long vacation.', '{What|rel} {I want|cl} {＿|hit} is a long vacation.', '私が欲しいものは長い休みだ。', '主語'],
+      ['This is {the thing which|relsoft} {I was looking for|cl} {＿|hit}.', 'This is {what|rel} {I was looking for|cl} {＿|hit}.', 'これは私が探していたものだ。', '補語'],
+      ['He is not {the man that|relsoft} {he used to be|cl} {＿|hit}.', 'He is not {what|rel} {he used to be|cl} {＿|hit}.', '彼は昔の彼ではない。', '慣用表現']
+    ];
+    let i = 0, packed = false;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, '例' + (k + 1) + '（' + d[3] + '）']), 0, v => { i = v; packed = false; draw(); });
+    const bench = h('div', { class: 'bench' }), bb = h('div', { class: 'btns' }); p.append(bench, bb);
+    const b = btn(bb, 'まとめる', () => { packed = !packed; draw(); if (packed) touch(); }, true);
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'lbl' }, packed ? 'what 1語にまとめた形' : '先行詞＋関係代名詞の形'), E(packed ? d[1] : d[0], packed ? 'pop' : ''), h('div', { class: 'jpline' }, d[2]));
+      if (packed) bench.append(note(i === 3 ? '<b>what S used to be</b>「昔のS」は慣用表現。what S is「今のS」とセットで覚えよう。' : '<b>what のかたまり</b>（' + d[3] + 'の働き）。what のうしろにも穴がある。'));
+      b.textContent = packed ? 'もどす' : 'まとめる';
+    }
+    draw();
+  }
+};
+
+// ---------- 3-A コンマのあるなし ----------
+function peopleSVG(list, hat) {
+  const W = 520, H = 150, n = list.length, gap = Math.min(96, (W - 60) / n);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="人数の図">`;
+  const x0 = W / 2 - gap * (n - 1) / 2;
+  list.forEach((k, j) => {
+    const x = x0 + j * gap, on = k === 'on', q = k === 'q';
+    const fill = on ? 'var(--blue)' : 'var(--grid)', st = q ? 'var(--muted)' : 'var(--ink)';
+    s += `<circle cx="${x}" cy="48" r="16" fill="${on ? 'var(--blue-soft)' : 'var(--card)'}" stroke="${st}" stroke-width="2"${q ? ' stroke-dasharray="4 3"' : ''}/>`;
+    s += `<path d="M${x - 24} 122q0-40 24-40t24 40z" fill="${fill}" stroke="${st}" stroke-width="2"${q ? ' stroke-dasharray="4 3"' : ''}/>`;
+    if (hat) s += `<path d="M${x - 18} 36h36M${x - 12} 36v-12h24v12" fill="var(--ink)" stroke="var(--ink)" stroke-width="2" opacity="${q ? .35 : 1}"/>`;
+    if (on && !hat) s += `<rect x="${x - 7}" y="94" width="14" height="14" rx="2" fill="var(--card)"/><path d="M${x} 96v10M${x - 5} 101h10" stroke="var(--red)" stroke-width="2.6"/>`;
+    if (q) s += `<text x="${x}" y="54" text-anchor="middle" font-size="18" font-weight="700" fill="var(--muted)" font-family="sans-serif">?</text>`;
+  });
+  s += `<text x="${W / 2}" y="144" text-anchor="middle" font-size="12.5" fill="var(--muted)" font-family="sans-serif">${hat ? '黒い帽子＝お父さん' : '青＋赤十字＝医者になった息子　点線＝いるかもしれない息子'}</text></svg>`;
+  return s;
+}
+LABS.comma = {
+  title: 'コンマ1つで人数が変わる',
+  tryText: '「コンマをつける」をオン・オフして、<b>息子は何人いるのか</b>、<b>お父さんは何人いるのか</b>を図で確かめよう。',
+  why: 'コンマなし（制限用法）は「〜する<b>ほうの</b>」と名詞を<b>しぼりこむ</b>。だから「医者になった息子が3人」は、ほかの息子がいる可能性を残す。コンマあり（非制限用法）は名詞をしぼりこまず「<b>ちなみに</b>〜」と補足するだけ。父や母、固有名詞のように1つしかないものには、コンマつきを使うのじゃ。',
+  build(p, touch) {
+    const D = [
+      { nc: 'He has three sons {who became doctors|cl}.', njp: '彼には医者になった息子が3人いる。（医者にならなかった息子もいるかもしれない）', c: 'He has three sons, {who became doctors|cl}.', cjp: '彼には息子が3人いて、3人とも医者になった。', fn: ['on', 'on', 'on', 'q', 'q'], fc: ['on', 'on', 'on'], hat: false },
+      { nc: 'My father {who lives in Osaka|cl} is a teacher.', njp: '大阪に住んでいる<b>ほうの</b>父は教師だ。→ 父が何人もいるみたいで不自然！', c: 'My father, {who lives in Osaka|cl}, is a teacher.', cjp: '父は、大阪に住んでいるのだが、教師をしている。（父は1人。補足説明）', fn: ['on', 'q', 'q'], fc: ['on'], hat: true }
+    ];
+    let i = 0, comma = false;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, [[0, '例1 息子'], [1, '例2 父']], 0, v => { i = v; draw(); });
+    check(top, 'comma', 'コンマをつける', false, v => { comma = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'lbl' }, comma ? '非制限用法（コンマあり）＝ 補足説明' : '制限用法（コンマなし）＝ しぼりこみ'), E(comma ? d.c : d.nc, 'pop'),
+        h('div', { class: 'jpline', html: comma ? d.cjp : d.njp }),
+        h('div', { class: 'svgbox', html: peopleSVG(comma ? d.fc : d.fn, d.hat) }),
+        note(comma ? 'コンマのあとの関係詞に <b>that は使えない</b>。, who / , which だけ。' : 'しぼりこみ用法では、関係詞のかたまりが「どの〜か」を決めている。', comma ? 'ok' : ''));
+    }
+    draw();
+  }
+};
+
+// ---------- 3-B -ever の2つの顔 ----------
+LABS.ever = {
+  title: '-ever の2つの顔',
+  tryText: '語を切りかえて、<b>「〜は何でも」型</b>と<b>「たとえ〜でも」型</b>を見くらべよう。「言いかえを見る」で any ～ や no matter ～ に直すとどうなるかも確認。',
+  why: '-ever は「どんな〜でも」という気持ち。文の中で<b>名詞や副詞のかたまり</b>として使うと「〜する人は誰でも・〜するときはいつでも」、文の<b>前や後ろにくっつく副詞のかたまり</b>として使うと「たとえ〜しても」（譲歩）になる。譲歩の -ever は no matter ＋ 疑問詞 に言いかえられるのじゃ。',
+  build(p, touch) {
+    const D = {
+      whoever: [['{Whoever|rel} {comes first|cl} will get the prize.', '{Anyone who|relsoft} comes first will get the prize.', '最初に来た人は誰でも賞がもらえる。'], ['{Whoever|rel} {calls|cl}, don\'t answer the phone.', '{No matter who|relsoft} calls, don\'t answer the phone.', '誰が電話してきても、出ないで。']],
+      whatever: [['You can eat {whatever|rel} {you like|cl}.', 'You can eat {anything (that)|relsoft} you like.', '好きなものは何でも食べてよい。'], ['{Whatever|rel} {happens|cl}, I\'ll be on your side.', '{No matter what|relsoft} happens, I\'ll be on your side.', '何が起きても、私は君の味方だ。']],
+      whichever: [['Take {whichever|rel} {you want|cl}.', 'Take {any one (that)|relsoft} you want.', 'どれでも欲しいものを取って。'], ['{Whichever|rel} {you choose|cl}, you\'ll be happy with it.', '{No matter which|relsoft} you choose, you\'ll be happy with it.', 'どれを選んでも、満足するだろう。']],
+      wherever: [['Sit {wherever|rel} {you like|cl}.', 'Sit {at any place|relsoft} you like.', '好きなところに座って。'], ['{Wherever|rel} {you go|cl}, I\'ll follow you.', '{No matter where|relsoft} you go, I\'ll follow you.', 'どこへ行っても、君について行く。']],
+      whenever: [['Come {whenever|rel} {you want|cl}.', 'Come {at any time|relsoft} you want.', '来たいときはいつでも来て。'], ['{Whenever|rel} {you come|cl}, you\'ll be welcome.', '{No matter when|relsoft} you come, you\'ll be welcome.', 'いつ来ても、歓迎するよ。']],
+      however: [['Do it {however|rel} {you like|cl}.', 'Do it {in any way|relsoft} you like.', '好きなやり方でやって。'], ['{However hard|rel} {you try|cl}, you can\'t finish it in a day.', '{No matter how hard|relsoft} you try, you can\'t finish it in a day.', 'どんなにがんばっても、1日では終わらない。']]
+    };
+    let k = 'whoever', alt = false;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, Object.keys(D).map(x => [x, x]), k, v => { k = v; draw(); touch(); });
+    check(top, 'everalt', '言いかえを見る', false, v => { alt = v; draw(); });
+    const bench = h('div', { class: 'gen' }); p.append(bench);
+    function draw() {
+      bench.innerHTML = '';
+      const [a, b] = D[k];
+      [['「〜は何でも／いつでも」型', a, 'gr'], ['「たとえ〜でも」型（譲歩）', b, 'o']].forEach(([lab, d, c]) => {
+        bench.append(h('div', { class: 'g' }, h('span', { class: 'tg ' + c }, lab), h('div', { style: 'min-width:0' }, E(d[0]), alt ? E(d[1], 'pop') : null, h('div', { class: 'jpline' }, d[2]))));
+      });
+      if (k === 'however') bench.append(note('譲歩の however は <b>however ＋ 形容詞・副詞 ＋ S ＋ V</b> の語順。However you try hard とはしない。'));
+    }
+    draw();
+  }
+};
+
+// ---------- 4-A 2本のタワーをくらべる ----------
+LABS.scale = {
+  title: '2本のタワーをくらべる',
+  tryText: 'スライダーで2本のタワーの高さを変えよう。<b>同じ高さ</b>、<b>2倍</b>、<b>3倍</b>、<b>半分</b>のときに、言える英文がどう増えるか確かめよう。',
+  why: '同じなら as ～ as、ちがえば 比較級 ＋ than。「〜倍」は X times を <b>as ～ as の前</b>に置く（twice as tall as）。差を言いたいときは <b>数字を比較級の前</b>に（50 meters taller than）。くらべる向きを入れかえると、not as ～ as でも同じ内容を言えるのじゃ。',
+  build(p, touch) {
+    const st = { A: 200, B: 100 };
+    const ctr = h('div', { class: 'ctrls' }); p.append(ctr);
+    const sa = slider(ctr, { id: 'twA', label: 'Tower A の高さ', min: 50, max: 300, step: 10, value: st.A, unit: 'm' }, v => { st.A = v; draw(); touch(); });
+    const sb = slider(ctr, { id: 'twB', label: 'Tower B の高さ', min: 50, max: 300, step: 10, value: st.B, unit: 'm' }, v => { st.B = v; draw(); touch(); });
+    const pr = h('div', { class: 'btns' }); p.append(pr);
+    [['同じ', 150, 150], ['2倍', 200, 100], ['3倍', 300, 100], ['半分', 100, 200], ['1.5倍', 150, 100]].forEach(([t, a, b]) => btn(pr, t, () => { st.A = a; st.B = b; sa.v = a; sb.v = b; draw(); touch(); }));
+    const wrap = h('div', { class: 'bench' }); p.append(wrap);
+    const bars = h('div', { class: 'bars' }), names = h('div', { class: 'bnames' }, h('span', null, 'Tower A'), h('span', null, 'Tower B'));
+    const gen = h('div', { class: 'gen' });
+    wrap.append(bars, names); p.append(gen);
+    const J = s => s === 'Tower A' ? 'タワーA' : 'タワーB';
+    function draw() {
+      const { A, B } = st;
+      bars.innerHTML = '';
+      [['A', A], ['B', B]].forEach(([n, v]) => bars.append(h('div', { class: 'b' + (v >= Math.max(A, B) && A !== B ? ' top' : '') }, h('span', null, v + 'm'), h('i', { style: `height:${v / 300 * 160}px` }))));
+      const L = [];
+      if (A === B) {
+        L.push(['原級', 'Tower A is {as tall as|rel} Tower B.', 'タワーAはタワーBと同じくらいの高さだ。']);
+        L.push(['同じ', 'Tower A is {the same height as|rel} Tower B.', 'タワーAとタワーBは同じ高さだ。']);
+      } else {
+        const [big, small, bv, sv] = A > B ? ['Tower A', 'Tower B', A, B] : ['Tower B', 'Tower A', B, A];
+        const r = bv / sv;
+        L.push(['比較級', `${big} is {taller than|rel} ${small}.`, `${J(big)}は${J(small)}より高い。`]);
+        L.push(['否定の原級', `${small} is {not as tall as|rel} ${big}.`, `${J(small)}は${J(big)}ほど高くない。`]);
+        L.push(['差', `${big} is {${bv - sv} meters taller than|rel} ${small}.`, `${J(big)}は${J(small)}より${bv - sv}m高い。`]);
+        if (r >= 1.5) L.push(['強調', `${big} is {much taller than|rel} ${small}.`, `${J(big)}は${J(small)}よりずっと高い。`]);
+        const words = { 2: 'twice', 3: 'three times', 4: 'four times', 5: 'five times', 6: 'six times' };
+        if (Number.isInteger(r) && words[r]) {
+          L.push(['倍数', `${big} is {${words[r]} as tall as|rel} ${small}.`, `${J(big)}は${J(small)}の${r}倍の高さだ。`]);
+          if (r === 2) L.push(['倍数', `${small} is {half as tall as|rel} ${big}.`, `${J(small)}は${J(big)}の半分の高さだ。`]);
+        } else if (r === 1.5) L.push(['倍数', `${big} is {one and a half times as tall as|rel} ${small}.`, `${J(big)}は${J(small)}の1.5倍の高さだ。`]);
+      }
+      gen.innerHTML = '';
+      const tc = { '原級': 'gr', '同じ': 'gr', '比較級': '', '否定の原級': 'gr', '差': 'v', '強調': 'o', '倍数': 'r' };
+      L.forEach(([t, en, jp]) => gen.append(h('div', { class: 'g' }, h('span', { class: 'tg ' + (tc[t] || '') }, t), h('div', { style: 'min-width:0' }, E(en), h('div', { class: 'jpline' }, jp)))));
+      if (A !== B && !L.some(l => l[0] === '倍数')) gen.append(note('ちょうど2倍・3倍・半分などになると「〜倍」の文があらわれるぞ。'));
+    }
+    draw();
+  }
+};
+
+// ---------- 5-A すればするほど ----------
+LABS.themore = {
+  title: '「〜すればするほど」を動かす',
+  tryText: 'スライダーを右へ動かそう。<b>2本のメーターがいっしょに動く</b>関係が、the ＋ 比較級, the ＋ 比較級 の形です。',
+  why: 'the ＋ 比較級 ～, the ＋ 比較級 … は「一方が変われば、それにつれてもう一方も変わる」という連動の関係を表す。<b>比較級を文の先頭に出す</b>のがポイント。more books のように名詞がつくときは、名詞ごといっしょに前へ出すのじゃ。',
+  build(p, touch) {
+    const D = [
+      { a: '練習量', b: 'うまさ', en: '{The more|rel} you practice, {the better|rel} you play.', jp: '練習すればするほど、うまくなる。', plain: 'If you practice more, you play better.' },
+      { a: '登る高さ', b: '寒さ', en: '{The higher|rel} you climb, {the colder|rel} it gets.', jp: '高く登れば登るほど、寒くなる。', plain: 'As you climb higher, it gets colder.' },
+      { a: '読む本の数', b: '学ぶこと', en: '{The more books|rel} you read, {the more|rel} you learn.', jp: '本を読めば読むほど、多くのことを学ぶ。', plain: 'If you read more books, you learn more.' }
+    ];
+    let i = 0, x = 3;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, d.a + '→' + d.b]), 0, v => { i = v; draw(); });
+    const ctr = h('div', { class: 'ctrls' }); p.append(ctr);
+    slider(ctr, { id: 'tm', label: '左の量', min: 0, max: 10, step: 1, value: x }, v => { x = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    const meter = (lab, v, col) => h('div', { style: 'display:grid;grid-template-columns:7em minmax(0,1fr) 3em;gap:8px;align-items:center' },
+      h('span', { style: 'font-size:13px;font-weight:700' }, lab), h('div', { style: 'height:14px;border-radius:7px;background:var(--grid);overflow:hidden' }, h('i', { style: `display:block;height:100%;width:${v * 10}%;background:${col};transition:width .3s` })), h('span', { class: 'num', style: 'font-size:12px' }, v + '/10'));
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(meter(d.a, x, 'var(--blue)'), meter(d.b, x, 'var(--red)'), E(d.en), h('div', { class: 'jpline' }, d.jp),
+        h('div', { class: 'jpline' }, 'ふつうの文にすると： ', h('span', { class: 'en', style: 'font-size:15.5px;color:var(--ink)' }, d.plain)));
+      if (i === 2) bench.append(note('<b>The more books</b> you read：more だけでなく名詞 books もいっしょに文頭へ。The more you read books としないこと。'));
+    }
+    draw();
+  }
+};
+
+// ---------- 5-B no more than と not more than ----------
+LABS.nomore = {
+  title: 'no と not を数直線で見る',
+  tryText: '4つの表現を切りかえて、数直線の<b>点</b>と<b>はば</b>を見くらべよう。no のときは「気持ち」の矢印にも注目。',
+  why: '<b>no</b> は「差がまったくない」。no more than 1,000 yen は「1,000円より多い分はゼロ」＝ちょうど1,000円だが、<b>more</b> を打ち消しているので「少ない！（たった）」という気持ちが残る。<b>not</b> は「〜より多くはない」と範囲を打ち消すだけなので、not more than は「1,000円以下（せいぜい）」というはばを表すのじゃ。',
+  build(p, touch) {
+    const D = {
+      nm: { en: 'I have {no more than|rel} 1,000 yen.', jp: '私はたった1,000円しか持っていない。', eq: 'no more than ＝ only（たった）', kind: 'pt', feel: '少ない！' },
+      nl: { en: 'I have {no less than|rel} 1,000 yen.', jp: '私は1,000円も持っている。', eq: 'no less than ＝ as much as（〜も）', kind: 'pt', feel: '多い！' },
+      tm: { en: 'I have {not more than|rel} 1,000 yen.', jp: '私は多くても（せいぜい）1,000円しか持っていない。', eq: 'not more than ＝ at most（せいぜい）', kind: 'le' },
+      tl: { en: 'I have {not less than|rel} 1,000 yen.', jp: '私は少なくとも1,000円は持っている。', eq: 'not less than ＝ at least（少なくとも）', kind: 'ge' }
+    };
+    let k = 'nm';
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, [['nm', 'no more than'], ['nl', 'no less than'], ['tm', 'not more than'], ['tl', 'not less than']], k, v => { k = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function svg(d) {
+      const W = 520, H = 130, x0 = 30, x1 = 490, X = v => x0 + (x1 - x0) * v / 2000, y = 78;
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="数直線">`;
+      if (d.kind === 'le') s += `<rect x="${X(0)}" y="${y - 14}" width="${X(1000) - X(0)}" height="28" fill="var(--blue-soft)"/>`;
+      if (d.kind === 'ge') s += `<rect x="${X(1000)}" y="${y - 14}" width="${X(2000) - X(1000)}" height="28" fill="var(--blue-soft)"/>`;
+      s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--ink)" stroke-width="2"/>`;
+      [0, 500, 1000, 1500, 2000].forEach(v => { s += `<line x1="${X(v)}" y1="${y - 6}" x2="${X(v)}" y2="${y + 6}" stroke="var(--ink)" stroke-width="1.5"/><text x="${X(v)}" y="${y + 26}" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="monospace">${v}</text>`; });
+      if (d.kind === 'pt') {
+        s += `<circle cx="${X(1000)}" cy="${y}" r="9" fill="var(--red)" stroke="var(--card)" stroke-width="2.5"/>`;
+        const big = d.feel === '多い！';
+        s += `<text x="${X(1000)}" y="28" text-anchor="middle" font-size="${big ? 22 : 14}" font-weight="700" fill="var(--red)" font-family="sans-serif">${big ? 'も！' : 'たった'}（${d.feel}）</text>`;
+        s += `<path d="M${X(1000)} 36v${big ? 22 : 18}" stroke="var(--red)" stroke-width="2"/>`;
+      } else {
+        s += `<circle cx="${X(1000)}" cy="${y}" r="7" fill="var(--blue)"/>`;
+        s += `<text x="${d.kind === 'le' ? X(500) : X(1500)}" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="var(--blue)" font-family="sans-serif">${d.kind === 'le' ? '1,000以下のどこか' : '1,000以上のどこか'}</text>`;
+      }
+      return s + '</svg>';
+    }
+    function draw() {
+      const d = D[k]; bench.innerHTML = '';
+      bench.append(E(d.en, 'pop'), h('div', { class: 'jpline' }, d.jp), h('div', { class: 'svgbox', html: svg(d) }), note('<b>' + d.eq + '</b>' + (d.kind === 'pt' ? '　点（ちょうどその数）＋気持ち' : '　はば（範囲）を表す')));
+    }
+    draw();
+  }
+};
+
+// ---------- 6-A いちばんを言いかえる ----------
+LABS.rank = {
+  title: '「いちばん」を4通りで言う',
+  tryText: '4人の身長を変えて、<b>いちばん背が高い人</b>を入れかえよう。最上級の文と、同じ意味の言いかえが自動で変わります。2人が同じ身長で並んだらどうなる？',
+  why: '「Aがいちばん〜」は、「ほかのどの〜もAほど〜ではない（No other ～ as ～ as）」「ほかのどの〜もAより〜ではない（No other ～ 比較級 than）」「Aはほかのどの〜より〜（比較級 than any other ＋ 単数）」と言いかえられる。<b>any other の後ろは単数</b>、<b>all the other の後ろは複数</b>じゃ。',
+  build(p, touch) {
+    const P = [['Ken', 168], ['Mai', 175], ['Sho', 160], ['Yui', 171]];
+    const ctr = h('div', { class: 'ctrls' }); p.append(ctr);
+    P.forEach((x, k) => slider(ctr, { id: 'rk' + k, label: x[0], min: 150, max: 185, step: 1, value: x[1], unit: 'cm' }, v => { P[k][1] = v; draw(); touch(); }));
+    const wrap = h('div', { class: 'bench' }); p.append(wrap);
+    const bars = h('div', { class: 'bars', style: 'height:170px' }), names = h('div', { class: 'bnames' });
+    wrap.append(bars, names);
+    const gen = h('div', { class: 'gen' }); p.append(gen);
+    function draw() {
+      const mx = Math.max(...P.map(x => x[1])), tops = P.filter(x => x[1] === mx);
+      bars.innerHTML = ''; names.innerHTML = '';
+      P.forEach(([n, v]) => { bars.append(h('div', { class: 'b' + (v === mx ? ' top' : '') }, h('span', null, v), h('i', { style: `height:${(v - 140) / 45 * 130}px` }))); names.append(h('span', null, n)); });
+      gen.innerHTML = '';
+      if (tops.length > 1) {
+        gen.append(h('div', { class: 'g' }, h('span', { class: 'tg gr' }, '原級'), h('div', null, E(`${tops[0][0]} is {as tall as|rel} ${tops[1][0]}.`), h('div', { class: 'jpline' }, `${tops[0][0]}は${tops[1][0]}と同じくらいの背の高さだ。`))),
+          note('いちばんが2人いるときは「ほかのどの生徒よりも」とは言えない。最上級の言いかえは、1人だけがいちばんのときに使える。', 'ng'));
+        return;
+      }
+      const A = tops[0][0];
+      [['最上級', `${A} is {the tallest|rel} student in the class.`, `${A}はクラスでいちばん背が高い。`, 'r'],
+       ['原級', `{No other student|rel} in the class is {as tall as|rel} ${A}.`, `クラスのほかのどの生徒も${A}ほど背が高くない。`, 'gr'],
+       ['比較級', `{No other student|rel} in the class is {taller than|rel} ${A}.`, `クラスのほかのどの生徒も${A}より背が高くない。`, ''],
+       ['比較級', `${A} is {taller than any other student|rel} in the class.`, `${A}はクラスのほかのどの生徒よりも背が高い。`, ''],
+       ['比較級', `${A} is {taller than all the other students|rel} in the class.`, `${A}はクラスのほかのすべての生徒より背が高い。`, '']
+      ].forEach(([t, en, jp, c]) => gen.append(h('div', { class: 'g' }, h('span', { class: 'tg ' + c }, t), h('div', { style: 'min-width:0' }, E(en), h('div', { class: 'jpline' }, jp)))));
+    }
+    draw();
+  }
+};
+
+// ---------- 6-B くらべる相手をそろえる ----------
+LABS.match = {
+  title: 'くらべる相手をそろえる',
+  tryText: '空所に入れる語を2つのうちから選ぼう。下の箱で<b>何と何をくらべているか</b>が表示されます。種類がそろっていれば正しい比較です。',
+  why: '比較は「同じ種類のもの同士」をくらべる。「東京の人口」とくらべるなら「大阪の人口」でなければならない。the population をくり返す代わりに <b>that</b>（複数なら <b>those</b>）を使う。your bag の代わりは <b>yours</b>。くらべる相手がずれていないか、箱を思い浮かべるのじゃ。',
+  build(p, touch) {
+    const D = [
+      { s: ['The population of Tokyo is larger than', 'Osaka.'], L: '東京の人口', o: [['Osaka', '大阪（都市）', false], ['that of Osaka', '大阪の人口', true]] },
+      { s: ['The ears of a rabbit are longer than', 'a cat.'], L: 'ウサギの耳', o: [['a cat', 'ネコ（動物そのもの）', false], ['those of a cat', 'ネコの耳', true]] },
+      { s: ['My bag is heavier than', '.'], L: '私のかばん', o: [['you', 'あなた（人）', false], ['yours', 'あなたのかばん', true]] },
+      { s: ['The climate of Japan is milder than', 'England.'], L: '日本の気候', o: [['England', 'イギリス（国）', false], ['that of England', 'イギリスの気候', true]] }
+    ];
+    let i = 0, sel = null;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, '例' + (k + 1)]), 0, v => { i = v; sel = null; draw(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      const blank = sel == null ? '（　　）' : d.o[sel][0];
+      const s = h('div', { class: 'sent' }, d.s[0] + ' ', h('span', { class: 'w ' + (sel == null ? 'blank' : d.o[sel][2] ? 'hit' : 'relsoft') }, blank), '.');
+      bench.append(s);
+      const pk = h('div', { class: 'pick' }); bench.append(pk);
+      d.o.forEach((o, k) => { const b = h('button', { type: 'button', class: sel === k ? (o[2] ? 'ok' : 'ng') : '' }, o[0]); b.addEventListener('click', () => { sel = k; draw(); touch(); }); pk.append(b); });
+      const R = sel == null ? '？' : d.o[sel][1], ok = sel != null && d.o[sel][2];
+      bench.append(h('div', { class: 'vs' }, h('div', { class: 'box' }, d.L), h('span', { class: 'mid' }, 'vs'), h('div', { class: 'box' + (sel == null ? '' : ok ? ' ok' : ' ng') }, R)));
+      if (sel != null) bench.append(note(ok ? '<b>そろっている！</b>' + d.L + 'と' + R + 'をくらべている。' : '<b>ずれている。</b>' + d.L + 'と' + R + 'では種類がちがうものをくらべてしまう。', ok ? 'ok' : 'ng'));
+    }
+    draw();
+  }
+};
+
+// ---------- 7-A 時制ダイヤル ----------
+LABS.dial = {
+  title: '時制を1つ過去にずらす',
+  tryText: '例を選んで、「現実」と「想像」を切りかえよう。下の時制のものさしで、<b>if節の動詞が1つ左（過去）へずれる</b>ところを見よう。',
+  why: '現実の文では「今」は現在形、「過去」は過去形。想像の文（仮定法）では、それぞれを<b>1段だけ過去へずらす</b>。今の想像 → 過去形、過去の想像 → 過去完了形。主節も would / could ＋ 原形（今）、would / could have ＋ 過去分詞（過去）になる。ずらすことで「これは現実ではない」という距離を出しているのじゃ。',
+  build(p, touch) {
+    const D = [
+      { t: '今', f: "I {don't have|vb} a car, so I {can't drive|vb} to the beach.", fj: '車を持っていないので、海まで運転して行けない。', m: 'If I {had|vb} a car, I {could drive|vb} to the beach.', mj: 'もし車を持っていたら、海まで運転して行けるのに。', pos: [2, 1] },
+      { t: '今', f: "I {am not|vb} a bird, so I {can't fly|vb} to you.", fj: '私は鳥ではないので、あなたのところへ飛んで行けない。', m: 'If I {were|vb} a bird, I {could fly|vb} to you.', mj: 'もし私が鳥なら、あなたのところへ飛んで行けるのに。', pos: [2, 1] },
+      { t: '過去', f: "I {didn't study|vb} hard, so I {failed|vb} the test.", fj: '一生懸命勉強しなかったので、テストに落ちた。', m: 'If I {had studied|vb} hard, I {would have passed|vb} the test.', mj: 'もし一生懸命勉強していたら、テストに合格していただろう。', pos: [1, 0] },
+      { t: '過去', f: "It {rained|vb}, so we {didn't go|vb} hiking.", fj: '雨が降ったので、ハイキングに行かなかった。', m: "If it {hadn't rained|vb}, we {would have gone|vb} hiking.", mj: 'もし雨が降らなかったら、ハイキングに行っていただろう。', pos: [1, 0] }
+    ];
+    let i = 0, imag = false;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, [[0, '今①'], [1, '今②'], [2, '過去①'], [3, '過去②']], 0, v => { i = v; draw(); });
+    seg(top, [[false, '現実（直説法）'], [true, '想像（仮定法）']], false, v => { imag = v; draw(); if (v) touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'lbl' }, (imag ? '想像：' : '現実：') + d.t + 'のこと'), E(imag ? d.m : d.f, 'pop'), h('div', { class: 'jpline' }, imag ? d.mj : d.fj));
+      const lad = h('div', { class: 'ladder' });
+      ['過去完了 had p.p.', '過去形', '現在形', '未来 will'].forEach((t, k) => lad.append(h('div', { class: k === d.pos[imag ? 1 : 0] ? (imag ? 'imag' : 'real') : '' }, t)));
+      bench.append(h('div', { class: 'lbl' }, 'if節（または事実の文）の動詞はどの時制？'), lad,
+        note(imag ? '<b>1段左へ。</b>' + d.t + 'のことなのに、' + (d.t === '今' ? '過去形' : '過去完了形') + 'を使っている。これが「現実ではない」のしるし。' : '現実のことは、ふつうの時制で言う。', imag ? 'ok' : ''));
+    }
+    draw();
+  }
+};
+
+// ---------- 7-B 過去形は「距離」 ----------
+LABS.distance = {
+  title: '過去形は「距離」のしるし',
+  tryText: 'スライダーを右へ動かすと、現実（相手）からの<b>距離</b>が大きくなります。想像の距離とていねいさの距離、どちらも過去形がカギです。',
+  why: '英語の過去形は「時間的に遠い」だけでなく、「現実から遠い」「相手との心の距離をとる（ていねい）」にも使われる。If I won ～ は「当たる可能性は低いと思っている」気持ち、Could you ～? は「えんりょしながら頼む」気持ちじゃ。were to はさらに「仮の話」の色が強い。',
+  build(p, touch) {
+    const D = {
+      imag: [['If I {win|vb} the contest, I {will buy|vb} a new bike.', 'コンテストで優勝したら、新しい自転車を買うつもりだ。', 'ありうる話（直説法）'],
+        ['If I {won|vb} the contest, I {would buy|vb} a new bike.', 'もしコンテストで優勝したら、新しい自転車を買うのになあ。', '可能性は低いと思っている（仮定法過去）'],
+        ['If I {were to win|vb} the contest, I {would buy|vb} a new bike.', '仮にコンテストで優勝するとしたら、新しい自転車を買うだろう。', '「仮に」の話（were to）']],
+      polite: [['{Can|vb} you help me?', '手伝ってくれる？', 'ふつうの頼み方'],
+        ['{Could|vb} you help me?', '手伝っていただけますか。', 'ていねい（過去形で距離をとる）'],
+        ['I {was wondering|vb} if you {could|vb} help me.', '手伝っていただけないかと思っているのですが。', 'とてもていねい（過去進行形＋could）']]
+    };
+    let mode = 'imag', x = 0;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, [['imag', '想像の距離'], ['polite', 'ていねいさの距離']], mode, v => { mode = v; draw(); });
+    const ctr = h('div', { class: 'ctrls' }); p.append(ctr);
+    slider(ctr, { id: 'dist', label: '距離', min: 0, max: 2, step: 1, value: 0, fmt: v => ['近い', 'ふつう', '遠い'][v] }, v => { x = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function draw() {
+      const d = D[mode][x]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'gauge' }, h('i', { style: `left:${x * 50}%` })), h('div', { class: 'gauge-l' }, h('span', null, mode === 'imag' ? '現実に近い' : '気軽'), h('span', null, mode === 'imag' ? '現実から遠い' : 'ていねい')),
+        E(d[0], 'pop'), h('div', { class: 'jpline' }, d[1]), note('<b>' + d[2] + '</b>'));
+    }
+    draw();
+  }
+};
+
+// ---------- 8-A 時間の線で見る混合仮定法 ----------
+LABS.mixed = {
+  title: '時間の線で見る：if節と主節',
+  tryText: 'if節（条件）の時と、主節（結果）の時をそれぞれ選ぼう。時間の線の上で<b>どこからどこへ</b>つながる文かが見えます。「過去 → 今」が混合仮定法。',
+  why: 'if節の形は「条件の時」で、主節の形は「結果の時」で決まる。条件が過去なら had p.p.、今なら過去形。結果が過去なら would have p.p.、今なら would ＋ 原形。2つを別々に決めて組み合わせればよいのじゃ。主節の now や today は「結果は今」というヒントになる。',
+  build(p, touch) {
+    const D = {
+      'now-now': ['If I {had|vb} more time, I {would travel|vb} around the world.', '（今）もっと時間があれば、（今）世界中を旅するのに。', '仮定法過去', 'If S 過去形, S would 原形'],
+      'past-past': ['If I {had left|vb} home earlier, I {would have caught|vb} the train.', '（あのとき）もっと早く家を出ていたら、（あのとき）電車に間に合っていたのに。', '仮定法過去完了', 'If S had p.p., S would have p.p.'],
+      'past-now': ['If I {had caught|vb} that train, I {would be|vb} at school {now|rel}.', '（あのとき）あの電車に乗れていたら、今ごろ学校にいるのに。', '混合仮定法', 'If S had p.p., S would 原形（now）'],
+      'now-past': ['If I {were|vb} not so shy, I {would have talked|vb} to her yesterday.', '（もともと）こんなに内気でなければ、昨日彼女に話しかけていたのに。', '混合仮定法（逆の組み合わせ）', 'If S 過去形, S would have p.p.']
+    };
+    let a = 'past', b = 'now';
+    const top = h('div', { class: 'btns' }); p.append(top);
+    top.append(h('span', { style: 'font-size:13px;font-weight:700' }, 'if節の時'));
+    seg(top, [['now', '今'], ['past', '過去']], a, v => { a = v; draw(); touch(); });
+    top.append(h('span', { style: 'font-size:13px;font-weight:700;margin-left:6px' }, '主節の時'));
+    seg(top, [['now', '今'], ['past', '過去']], b, v => { b = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function svg() {
+      const W = 520, H = 120, X = { past: 150, now: 380 }, y = 70;
+      let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="時間の線">`;
+      s += `<line x1="30" y1="${y}" x2="490" y2="${y}" stroke="var(--ink)" stroke-width="2"/><path d="M490 ${y}l-10-6v12z" fill="var(--ink)"/>`;
+      s += `<text x="${X.past}" y="${y + 30}" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="sans-serif">過去</text><text x="${X.now}" y="${y + 30}" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="sans-serif">今</text>`;
+      if (a === b) s += `<circle cx="${X[a]}" cy="${y}" r="11" fill="var(--orange)"/><circle cx="${X[b]}" cy="${y}" r="5" fill="var(--blue)"/><text x="${X[a]}" y="${y - 22}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)" font-family="sans-serif">条件も結果も同じ時</text>`;
+      else {
+        const x1 = X[a], x2 = X[b], mid = (x1 + x2) / 2;
+        s += `<path d="M${x1} ${y - 10}Q${mid} ${y - 70} ${x2} ${y - 12}" fill="none" stroke="var(--red)" stroke-width="2.5"/>`;
+        s += `<path d="M${x2} ${y - 12}l${x2 > x1 ? -12 : 12} -4l${x2 > x1 ? 3 : -3} 12z" fill="var(--red)"/>`;
+        s += `<circle cx="${x1}" cy="${y}" r="9" fill="var(--orange)"/><circle cx="${x2}" cy="${y}" r="9" fill="var(--blue)"/>`;
+        s += `<text x="${x1}" y="${y + 48}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--orange)" font-family="sans-serif">条件（if節）</text><text x="${x2}" y="${y + 48}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--blue)" font-family="sans-serif">結果（主節）</text>`;
+      }
+      return s + '</svg>';
+    }
+    function draw() {
+      const d = D[a + '-' + b]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'svgbox', html: svg() }), h('div', { class: 'lbl' }, d[2]), E(d[0], 'pop'), h('div', { class: 'jpline' }, d[1]), note('<b>形：</b><span class="en">' + d[3] + '</span>', a !== b ? 'ok' : ''));
+    }
+    draw();
+  }
+};
+
+// ---------- 8-B I wish と as if ----------
+LABS.wish = {
+  title: 'I wish と as if の時のずれ',
+  tryText: '4つの文を切りかえて、<b>主節の時</b>と<b>中身の時</b>の関係を見よう。中身が主節と同じ時なら過去形、主節より前なら過去完了形です。',
+  why: 'I wish や as if の後ろも「現実とちがう想像」なので、時制を1つ過去にずらす。基準は主節の動詞の時。I wish（今）の後ろで今のことなら過去形、過去のことなら過去完了。as if も同じで、looked（過去）より前のことなら had seen になるのじゃ。',
+  build(p, touch) {
+    const D = [
+      ['I wish（今のこと）', "（現実：I don't have a dog.）", 'I {wish|rel} I {had|vb} a dog.', '犬を飼っていたらいいのに。', ['主節：wish（今）', '中身：今のこと → 過去形']],
+      ['I wish（過去のこと）', "（現実：I didn't study harder last year.）", 'I {wish|rel} I {had studied|vb} harder last year.', '去年もっと勉強しておけばよかった。', ['主節：wish（今）', '中身：過去のこと → 過去完了']],
+      ['as if（同じ時）', '（現実：彼は何でも知っているわけではない）', 'He {talks|rel} as if he {knew|vb} everything.', '彼はまるで何でも知っているかのように話す。', ['主節：talks（今）', '中身：同じ時 → 過去形']],
+      ['as if（前の時）', '（現実：幽霊を見たわけではない）', 'She {looked|rel} as if she {had seen|vb} a ghost.', '彼女はまるで幽霊でも見たかのような顔をしていた。', ['主節：looked（過去）', '中身：それより前 → 過去完了']]
+    ];
+    let i = 0;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, d[0]]), 0, v => { i = v; draw(); touch(); });
+    const bench = h('div', { class: 'bench' }); p.append(bench);
+    function draw() {
+      const d = D[i]; bench.innerHTML = '';
+      bench.append(h('div', { class: 'jpline' }, d[1]), E(d[2], 'pop'), h('div', { class: 'jpline' }, d[3]),
+        h('div', { class: 'vs' }, h('div', { class: 'box' }, d[4][0]), h('span', { class: 'mid' }, '→'), h('div', { class: 'box ok' }, d[4][1])));
+    }
+    draw();
+  }
+};
+
+// ---------- 9-A if を消すと倒置 ----------
+LABS.invert = {
+  title: 'if を消すと、動詞が前に飛び出す',
+  tryText: '「if を消す」を押そう。<b>If が消えて、were / had / should が先頭に移動</b>します。どの文でも同じことが起きるか確かめよう。',
+  why: 'if を省略すると、そのままでは条件の文だとわからない。そこで were / had / should を主語の前に出す（疑問文と同じ語順）ことで「これは条件だ」と示すのじゃ。倒置できるのはこの3語だけ。If I knew → Knew I とはならないぞ。',
+  build(p, touch) {
+    const D = [
+      [['If', 'I', 'were', 'you', ',', 'I', "wouldn't", 'do', 'that', '.'], 2, 'もし私があなたなら、そんなことはしないだろう。'],
+      [['If', 'I', 'had', 'known', 'the', 'truth', ',', 'I', 'would', 'have', 'told', 'you', '.'], 2, 'もし真実を知っていたら、あなたに話していただろう。'],
+      [['If', 'you', 'should', 'need', 'help', ',', 'please', 'call', 'me', '.'], 2, '万一助けが必要なら、電話してください。'],
+      [['If', 'it', 'were', 'not', 'for', 'water', ',', 'nothing', 'could', 'live', '.'], 2, 'もし水がなければ、何も生きられないだろう。'],
+      [['If', 'it', 'had', 'not', 'been', 'for', 'your', 'help', ',', 'I', 'would', 'have', 'failed', '.'], 2, 'もしあなたの助けがなかったら、私は失敗していただろう。']
+    ];
+    let i = 0, st = 0, tmr = 0;
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, D.map((d, k) => [k, d[0][d[1]]]).map((x, k) => [k, (k + 1) + '. ' + x[1]]), 0, v => { i = v; st = 0; clearTimeout(tmr); draw(); });
+    const bench = h('div', { class: 'bench' }), bb = h('div', { class: 'btns' }); p.append(bench, bb);
+    const b = btn(bb, 'if を消す', () => {
+      if (st === 0) { st = 1; draw(); tmr = setTimeout(() => { st = 2; draw(); touch(); }, REDUCED ? 0 : 520); }
+      else { st = 0; draw(); }
+    }, true);
+    function draw() {
+      const [tk, vi, jp] = D[i]; bench.innerHTML = '';
+      let words;
+      if (st < 2) words = tk.map((t, k) => [t, k === 0 ? (st === 1 ? 'rel gone' : 'rel') : k === vi ? 'vb' : '']);
+      else {
+        const v = tk[vi][0].toUpperCase() + tk[vi].slice(1);
+        words = [[v, 'vb slidein'], ...tk.slice(1, vi).map(t => [t, '']), ...tk.slice(vi + 1).map(t => [t, ''])];
+      }
+      const s = h('div', { class: 'sent' }); s.append(joinTokens(words.map(w => w[0]), (t, k) => h('span', { class: 'w ' + words[k][1] }, t)));
+      bench.append(h('div', { class: 'lbl' }, st < 2 ? 'もとの文' : '倒置した文'), s, h('div', { class: 'jpline' }, jp));
+      if (st === 2) bench.append(note('<b>' + tk[vi] + '</b> が主語の前へ。意味は変わらない。', 'ok'));
+      b.textContent = st === 0 ? 'if を消す' : 'もとにもどす';
+    }
+    draw();
+  }
+};
+
+// ---------- 9-B 「〜がなければ」の4つの形 ----------
+LABS.without = {
+  title: '「〜がなければ」の4つの形',
+  tryText: '今のことか過去のことかを切りかえて、<b>4つの言い方</b>を見くらべよう。Without と But for は形が変わらないことに注目。',
+  why: 'If it were not for ～ / If it had not been for ～ は「〜がなければ（なかったら）」の決まった形。倒置で Were it not for / Had it not been for にもなる。Without ～ と But for ～ は1語（2語）で同じ意味を表せる便利な表現で、今か過去かは<b>主節の形</b>（could ＋ 原形 / could have ＋ 過去分詞）で判断するのじゃ。',
+  build(p, touch) {
+    const D = {
+      now: { m: 'I {could not finish|vb} this work.', jp: 'あなたの助けがなければ、この仕事を終えられないだろう。', L: [['If it {were not for|rel} your help, I {could not finish|vb} this work.', 'if節'], ['{Were it not for|rel} your help, I {could not finish|vb} this work.', '倒置'], ['{Without|rel} your help, I {could not finish|vb} this work.', 'Without'], ['{But for|rel} your help, I {could not finish|vb} this work.', 'But for']] },
+      past: { jp: 'あなたの助けがなかったら、この仕事を終えられなかっただろう。', L: [['If it {had not been for|rel} your help, I {could not have finished|vb} this work.', 'if節'], ['{Had it not been for|rel} your help, I {could not have finished|vb} this work.', '倒置'], ['{Without|rel} your help, I {could not have finished|vb} this work.', 'Without'], ['{But for|rel} your help, I {could not have finished|vb} this work.', 'But for']] }
+    };
+    let k = 'now';
+    const top = h('div', { class: 'btns' }); p.append(top);
+    seg(top, [['now', '今のこと'], ['past', '過去のこと']], k, v => { k = v; draw(); touch(); });
+    const gen = h('div', { class: 'gen' }); p.append(gen);
+    function draw() {
+      const d = D[k]; gen.innerHTML = '';
+      gen.append(h('div', { class: 'jpline', style: 'font-weight:700;color:var(--ink)' }, d.jp));
+      const tc = { 'if節': '', '倒置': 'r', 'Without': 'gr', 'But for': 'o' };
+      d.L.forEach(([en, t]) => gen.append(h('div', { class: 'g' }, h('span', { class: 'tg ' + tc[t] }, t), E(en, 'pop'))));
+      gen.append(note(k === 'now' ? '主節は could ＋ 原形 → 今のことの想像。' : '主節は could have ＋ 過去分詞 → 過去のことの想像。Without / But for の形は同じ。'));
+    }
+    draw();
+  }
+};
+
+// ===== ホームの見本（3つの見方） =====
+function heroDemo(parent) {
+  const D = [
+    ['関係詞', 'the {book|ant} {that I bought yesterday|cl}', '{昨日買った|cl}本　── 名詞を<b>うしろから</b>説明', 'u1'],
+    ['比較', 'Tower A is {twice as tall as|rel} Tower B.', 'タワーAはタワーBの<b>2倍</b>の高さ　── as と as の前に倍数', 'u4'],
+    ['仮定法', 'If I {were|vb} a bird, I {could fly|vb} to you.', '鳥なら飛んで行けるのに　── 今の想像は<b>過去形</b>', 'u7']
+  ];
+  let i = 0, auto = !REDUCED, tmr = 0;
+  const hd = h('div', { class: 'hd' }); parent.append(hd);
+  const sg = seg(hd, D.map((d, k) => [k, d[0]]), 0, v => { i = v; auto = false; clearInterval(tmr); draw(); });
+  hd.append(h('small', null, '見本をタップ'));
+  const stage = h('div', { class: 'hero-stage' }); parent.append(stage);
+  function draw() {
+    const d = D[i]; stage.innerHTML = '';
+    stage.append(h('div', { class: 'big pop', html: M(d[1]) }), h('div', { class: 'jp', html: M(d[2]) }),
+      h('div', null, h('a', { class: 'btn', href: '#' + d[3], 'data-go': d[3], style: 'text-decoration:none' }, 'UNIT ' + d[3].slice(1) + ' へ →')));
+  }
+  draw();
+  if (auto) tmr = setInterval(() => { if (!parent.isConnected) { clearInterval(tmr); return; } i = (i + 1) % D.length; sg.set(i); draw(); }, 4800);
+}
+
+// ===== 問題（4レベル × 9単元） =====
+// lv: jugyo 授業 / teiki 定期試験 / nyushi 大学入試 / kyotsu 共通テスト
+// t: 'ord' は並べかえ。ans は語をスペースで区切った正解文
+const EN = s => '<span class="en">' + s + '</span>';
+const CTX = s => '<span class="ctx">' + s + '</span>';
+const B = '（　　）';
+const QS = [
+  // UNIT 1
+  { id: 'u1-1', u: 'u1', lv: 'jugyo', q: EN(`I have a friend ${B} lives in Canada.`), ch: ['who', 'which', 'whose', 'what'], a: 0, ex: '先行詞 a friend は人。空所のすぐ後ろに動詞 lives があるので主格の who。' },
+  { id: 'u1-2', u: 'u1', lv: 'jugyo', q: EN(`This is the bag ${B} my father gave me.`), ch: ['which', 'who', 'whose', 'where'], a: 0, ex: '先行詞 the bag は物。gave me の後ろの「物」が欠けている（目的格）ので which。省略もできる。' },
+  { id: 'u1-3', u: 'u1', lv: 'teiki', q: EN(`I know a girl ${B} mother is a famous singer.`), ch: ['whose', 'who', 'whom', 'which'], a: 0, ex: '空所の後ろに冠詞のない名詞 mother。「その少女の母親」なので所有格 whose。' },
+  { id: 'u1-4', u: 'u1', lv: 'teiki', t: 'ord', q: 'これは私が今までに読んだ中でいちばんおもしろい本だ。', ans: 'This is the most interesting book that I have ever read .', ex: '先行詞に最上級（the most interesting）がつくときは that が好まれる。I have ever read の後ろに目的語の穴がある。' },
+  { id: 'u1-5', u: 'u1', lv: 'nyushi', q: EN(`He is the only person ${B} I can trust.`), ch: ['that', 'what', 'which', 'whose'], a: 0, ex: '先行詞に the only がつくと that が好まれる。which は人には使えない。what は先行詞をふくむので、前に名詞があるときは使えない。' },
+  { id: 'u1-6', u: 'u1', lv: 'nyushi', q: EN(`The man ${B} I thought was honest deceived me.`), ch: ['who', 'whom', 'whose', 'which'], a: 0, ex: 'I thought をかっこに入れると The man (who) was honest となり、was の主語が欠けている。だから主格の who。I thought につられて whom を選ばないこと。' },
+  { id: 'u1-7', u: 'u1', lv: 'kyotsu', q: CTX(`A: Who is that woman talking with Mr. Sato?<br>B: She is the writer ${B} novel won a prize last year.`), ch: ['whose', 'who', 'which', 'that'], a: 0, ex: '「その作家の小説」なので所有格 whose。空所の後ろに冠詞のない名詞 novel が続いている。' },
+  { id: 'u1-8', u: 'u1', lv: 'kyotsu', q: '次の英文の内容に合うものを選べ。' + CTX('The students who finished the test early went home.'), ch: ['テストを早く終えた生徒だけが帰った。', '生徒は全員帰り、全員がテストを早く終えていた。', '生徒は全員テストを早く終えたが、誰も帰らなかった。', '早く帰った生徒は、テストを終えていなかった。'], a: 0, ex: 'コンマのない who finished ～ は「テストを早く終えた<b>ほうの</b>生徒」としぼりこむ。まだ終えていない生徒は残っていたと読める。' },
+  // UNIT 2
+  { id: 'u2-1', u: 'u2', lv: 'jugyo', q: EN(`This is the house ${B} I was born.`), ch: ['where', 'which', 'when', 'what'], a: 0, ex: 'I was born で文が完成している（完全な文）。場所の先行詞＋完全な文なので関係副詞 where。' },
+  { id: 'u2-2', u: 'u2', lv: 'jugyo', q: EN(`${B} he said surprised everyone.`), ch: ['What', 'That', 'Which', 'Who'], a: 0, ex: '前に先行詞がなく、「彼が言ったこと」が文の主語になっている。先行詞をふくむ what。said の後ろに目的語の穴がある。' },
+  { id: 'u2-3', u: 'u2', lv: 'teiki', q: EN(`This is the city ${B} I visited last summer.`), ch: ['which', 'where', 'when', 'why'], a: 0, ex: 'visit は「〜を訪れる」で目的語が必要。visited の後ろに穴があるので関係代名詞 which。先行詞が場所でも where とはかぎらない。' },
+  { id: 'u2-4', u: 'u2', lv: 'teiki', q: 'ほぼ同じ意味になるように空所に入れよ。' + CTX(`This is the house where I live.<br>＝ This is the house ${B} I live.`), ch: ['in which', 'which', 'on which', 'of which'], a: 0, ex: 'live in the house なので、where ＝ in which。関係副詞は「前置詞＋which」で書きかえられる。' },
+  { id: 'u2-5', u: 'u2', lv: 'nyushi', q: EN(`That is ${B} he solved the problem.`), ch: ['how', 'the way how', 'which', 'what'], a: 0, ex: '「そのようにして彼は問題を解いた」。方法を表す関係副詞 how。the way how とは言わない（the way か how のどちらか一方）。' },
+  { id: 'u2-6', u: 'u2', lv: 'nyushi', t: 'ord', q: '彼は昔の彼ではない。', ans: 'He is not what he used to be .', ex: 'what S used to be「昔のS」は慣用表現。what S is は「今のS」。' },
+  { id: 'u2-7', u: 'u2', lv: 'kyotsu', q: CTX(`A: Do you remember the day ${B} we first met?<br>B: Of course. It was raining hard.`), ch: ['when', 'which', 'where', 'what'], a: 0, ex: 'we first met で完成している。時の先行詞 the day ＋ 完全な文なので when。' },
+  { id: 'u2-8', u: 'u2', lv: 'kyotsu', q: CTX(`Ken: Why did you choose this university?<br>Yuki: It's near the sea, and I want to study marine biology. That's ${B} I chose it.`), ch: ['why', 'where', 'what', 'which'], a: 0, ex: 'That\'s why ～「そういうわけで〜」。前に述べた理由を受けて結果を言う会話表現。That\'s where ～ は「そこが〜の場所だ」。' },
+  // UNIT 3
+  { id: 'u3-1', u: 'u3', lv: 'jugyo', q: EN(`I have two sisters, ${B} live in Osaka.`), ch: ['who', 'that', 'which', 'whom'], a: 0, ex: 'コンマのあとの非制限用法。先行詞は人で、後ろに動詞 live がある（主格）ので who。非制限用法では that は使えない。' },
+  { id: 'u3-2', u: 'u3', lv: 'jugyo', q: '次の英文について正しいものを選べ。' + CTX('My uncle, who lives in Kyoto, is a teacher.'), ch: ['「京都に住んでいる」はおじについての補足説明である。', '京都以外に住んでいるおじと区別している。', '教師なのは京都に住んでいる別の人である。', 'おじは教師ではない。'], a: 0, ex: 'コンマのある非制限用法は、先行詞をしぼりこまずに「ちなみに〜」と情報を足すだけ。' },
+  { id: 'u3-3', u: 'u3', lv: 'teiki', q: EN(`He said he was sick, ${B} was a lie.`), ch: ['which', 'that', 'what', 'it'], a: 0, ex: ', which は前の文の内容（病気だと言ったこと）全体を受けられる。that は非制限用法に使えない。it ではつなぐ働きがない。' },
+  { id: 'u3-4', u: 'u3', lv: 'teiki', q: EN(`This is the box ${B} which she keeps her letters.`), ch: ['in', 'on', 'at', 'of'], a: 0, ex: 'She keeps her letters in the box. の in the box が in which になって前に出た形。' },
+  { id: 'u3-5', u: 'u3', lv: 'nyushi', q: EN(`${B} comes first will get the prize.`), ch: ['Whoever', 'Whomever', 'Whatever', 'However'], a: 0, ex: '「最初に来る人は誰でも」。comes の主語になるので主格の whoever（＝ anyone who）。' },
+  { id: 'u3-6', u: 'u3', lv: 'nyushi', t: 'ord', q: 'どんなに一生懸命やっても、この本を1日で読み終えることはできない。', ans: "However hard you try , you can't finish this book in a day .", ex: 'however ＋ 形容詞・副詞 ＋ S ＋ V「どんなに〜しても」。hard を however のすぐ後ろに置く。' },
+  { id: 'u3-7', u: 'u3', lv: 'kyotsu', q: CTX(`Clerk: We have three kinds of cake today. You can choose ${B} you like.`), ch: ['whichever', 'wherever', 'whenever', 'however'], a: 0, ex: '限られた選択肢（3種類のケーキ）の中から「どれでも」なので whichever。choose の目的語になる名詞のかたまり。' },
+  { id: 'u3-8', u: 'u3', lv: 'kyotsu', q: CTX(`Our town holds a big festival every August, ${B} attracts thousands of tourists.`), ch: ['which', 'where', 'when', 'what'], a: 0, ex: '空所の後ろに attracts の主語がない（主語の穴）ので関係代名詞。コンマつきで a big festival を補足説明する which。' },
+  // UNIT 4
+  { id: 'u4-1', u: 'u4', lv: 'jugyo', q: EN(`Tom is as ${B} as his father.`), ch: ['tall', 'taller', 'tallest', 'more tall'], a: 0, ex: 'as と as の間は原級（もとの形）。' },
+  { id: 'u4-2', u: 'u4', lv: 'jugyo', q: EN(`This question is ${B} than that one.`), ch: ['more difficult', 'difficult', 'most difficult', 'difficulter'], a: 0, ex: 'than があるので比較級。difficult のような長い語は more をつける。' },
+  { id: 'u4-3', u: 'u4', lv: 'teiki', q: EN(`Mt. Fuji is the highest mountain ${B} Japan.`), ch: ['in', 'of', 'than', 'at'], a: 0, ex: '範囲・場所を表すときは in（in Japan / in the class）。of は of the three のように複数のものの中で。' },
+  { id: 'u4-4', u: 'u4', lv: 'teiki', q: EN(`This bag is ${B} more expensive than that one.`), ch: ['much', 'very', 'many', 'more'], a: 0, ex: '比較級を強めるのは much / far / even / still。very は比較級を強められない。' },
+  { id: 'u4-5', u: 'u4', lv: 'nyushi', q: EN(`My room is ${B} yours.`), ch: ['three times as large as', 'as large three times as', 'three times larger as', 'as three times large as'], a: 0, ex: '倍数表現は X times ＋ as ～ as。倍数は最初の as の前に置く。' },
+  { id: 'u4-6', u: 'u4', lv: 'nyushi', t: 'ord', q: 'この部屋はあの部屋の半分の広さだ。', ans: 'This room is half as large as that one .', ex: '「半分」は half as ～ as。that one は that room のこと。' },
+  { id: 'u4-7', u: 'u4', lv: 'kyotsu', q: 'あるイベントの来場者は、2016年が5,000人、2026年が10,000人だった。内容に合う英文を選べ。', ch: ['The number of visitors in 2026 was twice as large as that in 2016.', 'The number of visitors in 2016 was twice as large as that in 2026.', 'The number of visitors in 2026 was as large as that in 2016.', 'The number of visitors in 2016 was larger than that in 2026.'], a: 0, ex: '2026年は2016年の2倍。twice as large as。that in 2016 の that は the number of visitors のくり返しをさける語。' },
+  { id: 'u4-8', u: 'u4', lv: 'kyotsu', q: CTX(`A: Which do you like better, summer or winter?<br>B: I like summer ${B}. I love swimming in the sea.`), ch: ['better', 'best', 'the best', 'well'], a: 0, ex: '2つのうち「どちらがより好きか」なので比較級 better。like の比較級・最上級は better / best。' },
+  // UNIT 5
+  { id: 'u5-1', u: 'u5', lv: 'jugyo', q: EN(`The ${B} you practice, the better you will play.`), ch: ['more', 'most', 'much', 'many'], a: 0, ex: 'the ＋ 比較級, the ＋ 比較級「〜すればするほど…」。much の比較級は more。' },
+  { id: 'u5-2', u: 'u5', lv: 'jugyo', q: EN(`It is getting ${B}.`) + '（ますます寒くなってきた）', ch: ['colder and colder', 'cold and colder', 'more cold and cold', 'coldest and coldest'], a: 0, ex: '比較級 and 比較級「ますます〜」。' },
+  { id: 'u5-3', u: 'u5', lv: 'teiki', q: EN('I have no more than 500 yen.') + ' とほぼ同じ意味の文を選べ。', ch: ['I have only 500 yen.', 'I have as much as 500 yen.', 'I have at least 500 yen.', 'I have at most 500 yen.'], a: 0, ex: 'no more than ＝ only「たった〜」。差がゼロで、少ないという気持ちを表す。' },
+  { id: 'u5-4', u: 'u5', lv: 'teiki', q: EN('She has no less than ten cats.') + ' の no less than と同じ意味のものを選べ。', ch: ['as many as', 'only', 'at most', 'at least'], a: 0, ex: 'no less than ＝ as many（much）as「〜も」。多いという気持ち。数えられる cats なので as many as。' },
+  { id: 'u5-5', u: 'u5', lv: 'nyushi', q: EN('A whale is no more a fish than a horse is.') + ' の意味として最も適切なものを選べ。', ch: ['クジラが魚でないのは、馬が魚でないのと同じだ。', 'クジラは馬と同じくらい魚に近い。', 'クジラは馬よりも魚に近い。', 'クジラは魚だが、馬は魚ではない。'], a: 0, ex: 'A is no more B than C is (B)「AがBでないのは、CがBでないのと同じ」。いわゆるクジラの構文。両方とも否定になる。' },
+  { id: 'u5-6', u: 'u5', lv: 'nyushi', q: EN(`He is not so much a scholar ${B} a writer.`), ch: ['as', 'than', 'but', 'that'], a: 0, ex: 'not so much A as B「AというよりむしろB」。彼は学者というより作家だ。' },
+  { id: 'u5-7', u: 'u5', lv: 'kyotsu', q: CTX('Ken: How much was the concert ticket?<br>Mai: Not more than 3,000 yen, I think.') + 'Mai が伝えたいこととして最も適切なものを選べ。', ch: ['高くても3,000円くらいだと思う。', 'ちょうど3,000円で、とても高かった。', '少なくとも3,000円はしたと思う。', '3,000円もしたので驚いた。'], a: 0, ex: 'not more than ＝ at most「多くても・せいぜい」。3,000円以下のどこか、という範囲を表す。' },
+  { id: 'u5-8', u: 'u5', lv: 'kyotsu', q: 'ある調査の結果を説明した英文を読み、内容に合うものを選べ。' + CTX('The longer students used their smartphones at night, the less they slept.'), ch: ['夜にスマホを長く使う生徒ほど、睡眠時間が短かった。', '睡眠時間が長い生徒ほど、夜にスマホを長く使っていた。', '夜のスマホの使用時間と睡眠時間には関係がなかった。', '夜にスマホを使わない生徒ほど、睡眠時間が短かった。'], a: 0, ex: 'the ＋ 比較級, the ＋ 比較級：使う時間が長いほど（the longer）、眠る量が少ない（the less）。' },
+  // UNIT 6
+  { id: 'u6-1', u: 'u6', lv: 'jugyo', q: EN(`Mike is taller than any other ${B} in his class.`), ch: ['student', 'students', 'the student', 'a student'], a: 0, ex: 'any other の後ろは単数名詞。all the other の後ろなら複数（students）。' },
+  { id: 'u6-2', u: 'u6', lv: 'jugyo', q: 'ほぼ同じ意味になるように空所に入れよ。' + CTX(`Tokyo is the largest city in Japan.<br>＝ No other city in Japan is ${B} Tokyo.`), ch: ['as large as', 'larger', 'so larger as', 'the largest than'], a: 0, ex: 'No other ～ is as 原級 as A「ほかのどの〜もAほど〜ではない」＝ Aがいちばん。' },
+  { id: 'u6-3', u: 'u6', lv: 'teiki', q: EN(`The population of Tokyo is larger than ${B} of Osaka.`), ch: ['that', 'those', 'it', 'one'], a: 0, ex: '東京の人口とくらべるのは大阪の人口。the population（単数）のくり返しをさけて that を使う。' },
+  { id: 'u6-4', u: 'u6', lv: 'teiki', q: EN(`This car is superior ${B} that one.`), ch: ['to', 'than', 'from', 'for'], a: 0, ex: 'superior / inferior / senior / junior などのラテン比較級は than ではなく to を使う。' },
+  { id: 'u6-5', u: 'u6', lv: 'nyushi', q: EN(`The ears of a rabbit are longer than ${B} of a cat.`), ch: ['those', 'that', 'them', 'ones'], a: 0, ex: 'ウサギの耳とくらべるのはネコの耳。複数の the ears をくり返さずに those を使う。' },
+  { id: 'u6-6', u: 'u6', lv: 'nyushi', q: EN(`Of the two boys, Ken is ${B}.`), ch: ['the taller', 'taller', 'the tallest', 'tallest'], a: 0, ex: 'the ＋ 比較級 ＋ of the two「2人のうちで〜なほう」。2人だけなので最上級ではなく比較級、そして the がつく。' },
+  { id: 'u6-7', u: 'u6', lv: 'kyotsu', q: 'ある学校の部員数は、サッカー部32人、野球部25人、テニス部25人、バスケットボール部18人である。内容に合う英文を選べ。', ch: ['No other club has as many members as the soccer club.', 'The baseball club is larger than any other club.', 'The tennis club has more members than the baseball club.', 'The basketball club has as many members as the tennis club.'], a: 0, ex: 'サッカー部がいちばん多い。No other club has as many members as ～「ほかのどの部も〜ほど部員が多くない」。野球部とテニス部は同じ人数。' },
+  { id: 'u6-8', u: 'u6', lv: 'kyotsu', q: CTX(`She has won many international tournaments. She is one of the best ${B} in the world.`), ch: ['players', 'player', 'the player', 'a player'], a: 0, ex: 'one of the ＋ 最上級 ＋ 複数名詞「最も〜なものの1つ」。' },
+  // UNIT 7
+  { id: 'u7-1', u: 'u7', lv: 'jugyo', q: EN(`If I ${B} a bird, I could fly to you.`), ch: ['were', 'am', 'will be', 'have been'], a: 0, ex: '今の事実（鳥ではない）の反対なので仮定法過去。be動詞は were。' },
+  { id: 'u7-2', u: 'u7', lv: 'jugyo', q: EN(`If I had more money, I ${B} buy that guitar.`), ch: ['would', 'will', 'can', 'have'], a: 0, ex: 'if節が過去形 had → 仮定法過去。主節は would ＋ 原形。' },
+  { id: 'u7-3', u: 'u7', lv: 'teiki', q: EN(`If you had studied harder, you ${B} the exam.`), ch: ['would have passed', 'would pass', 'will pass', 'had passed'], a: 0, ex: 'if節が had studied → 過去の事実の反対（仮定法過去完了）。主節は would have ＋ 過去分詞。' },
+  { id: 'u7-4', u: 'u7', lv: 'teiki', q: 'ほぼ同じ意味になるように空所に入れよ。' + CTX("As I don't have a car, I can't drive you home.<br>＝ If I （ A ） a car, I （ B ） drive you home."), ch: ['A: had　B: could', 'A: have　B: can', 'A: had had　B: could have', 'A: have　B: could'], a: 0, ex: '今の事実（車がない）の反対なので仮定法過去。if節は過去形 had、主節は could ＋ 原形。' },
+  { id: 'u7-5', u: 'u7', lv: 'nyushi', q: EN(`If it ${B} tomorrow, the game will be canceled.`), ch: ['rains', 'rained', 'had rained', 'would rain'], a: 0, ex: '主節が will be なので、起こりうる条件を表す直説法。時・条件を表す副詞節では、未来のことも現在形で表す。' },
+  { id: 'u7-6', u: 'u7', lv: 'nyushi', t: 'ord', q: 'もしあのときその事実を知っていたら、君に話していただろう。', ans: 'If I had known the fact then , I would have told you .', ex: '過去の事実の反対なので仮定法過去完了。If S had p.p., S would have p.p.' },
+  { id: 'u7-7', u: 'u7', lv: 'kyotsu', q: CTX(`A: I can't go to the party tonight because I have to work.<br>B: That's too bad. If you ${B}, we could dance together.`), ch: ['came', 'come', 'will come', 'had come'], a: 0, ex: '実際には来られないので、それとちがう想像。今夜（これから）のことの想像は仮定法過去 came。主節も could ＋ 原形。' },
+  { id: 'u7-8', u: 'u7', lv: 'kyotsu', q: CTX('Emma: If I had left home ten minutes earlier, I would have caught the bus.') + '事実として正しいものを選べ。', ch: ['エマは家を出るのが遅く、バスに乗れなかった。', 'エマは10分早く家を出て、バスに乗れた。', 'エマはバスに乗れたが、遅刻した。', 'エマはその日、家を出なかった。'], a: 0, ex: '仮定法過去完了は過去の事実の反対。「10分早く出ていたら乗れたのに」→ 実際は早く出なかったので乗れなかった。' },
+  // UNIT 8
+  { id: 'u8-1', u: 'u8', lv: 'jugyo', q: EN(`I wish I ${B} a dog.`), ch: ['had', 'have', 'will have', 'has'], a: 0, ex: 'I wish ＋ 仮定法過去「（今）〜ならいいのに」。' },
+  { id: 'u8-2', u: 'u8', lv: 'jugyo', q: EN(`He talks as if he ${B} everything.`), ch: ['knew', 'know', 'will know', 'knowing'], a: 0, ex: 'as if ＋ 仮定法過去「まるで〜であるかのように」。主節（talks）と同じ時のことなので過去形。' },
+  { id: 'u8-3', u: 'u8', lv: 'teiki', q: EN(`I wish I ${B} harder when I was young.`), ch: ['had studied', 'studied', 'study', 'would study'], a: 0, ex: 'when I was young（過去）のことを後悔しているので、I wish ＋ 仮定法過去完了。' },
+  { id: 'u8-4', u: 'u8', lv: 'teiki', q: EN(`It's time you ${B} to bed.`), ch: ['went', 'go', 'will go', 'going'], a: 0, ex: 'It is time ＋ S ＋ 過去形「もう〜する時間だ（まだしていない）」。' },
+  { id: 'u8-5', u: 'u8', lv: 'nyushi', q: EN(`If I had taken the medicine last night, I ${B} better now.`), ch: ['would feel', 'would have felt', 'will feel', 'felt'], a: 0, ex: '条件は last night（過去）、結果は now（今）の混合仮定法。主節は would ＋ 原形。' },
+  { id: 'u8-6', u: 'u8', lv: 'nyushi', q: EN(`She looked as if she ${B} a ghost.`), ch: ['had seen', 'sees', 'has seen', 'will see'], a: 0, ex: '主節 looked（過去）よりも前に「見た」ことの想像なので、as if ＋ 過去完了。' },
+  { id: 'u8-7', u: 'u8', lv: 'kyotsu', q: CTX(`Rina: Oh no, it's raining and I didn't bring my umbrella. ${B} I had checked the weather forecast!`), ch: ['If only', 'Even if', 'Only if', 'As if'], a: 0, ex: 'If only ～!「〜でありさえすれば（よかったのに）」。I wish を強めた言い方で、過去の後悔なので had checked。' },
+  { id: 'u8-8', u: 'u8', lv: 'kyotsu', q: CTX("Taro: If I hadn't stayed up late last night, I wouldn't be so sleepy now.") + '内容に合うものを選べ。', ch: ['太郎は昨夜夜ふかしをしたので、今とても眠い。', '太郎は昨夜早く寝たが、今とても眠い。', '太郎は昨夜夜ふかしをしたが、今は眠くない。', '太郎は今夜夜ふかしをするつもりだ。'], a: 0, ex: '混合仮定法。「昨夜夜ふかししなかったら、今こんなに眠くないのに」→ 実際は夜ふかしをして、今眠い。' },
+  // UNIT 9
+  { id: 'u9-1', u: 'u9', lv: 'jugyo', q: EN(`${B} your help, I couldn't finish this work.`), ch: ['Without', 'With', 'Within', 'Unless'], a: 0, ex: 'Without ～「〜がなければ」。主節が couldn\'t ＋ 原形なので今のことの仮定。Unless の後ろには主語と動詞が必要。' },
+  { id: 'u9-2', u: 'u9', lv: 'jugyo', q: EN(`${B} I you, I would accept the offer.`), ch: ['Were', 'Was', 'Am', 'If'], a: 0, ex: 'If I were you の if を省略して倒置した形 Were I you。' },
+  { id: 'u9-3', u: 'u9', lv: 'teiki', q: 'ほぼ同じ意味になるように空所に入れよ。' + CTX(`If it were not for water, no living things could survive.<br>＝ ${B} water, no living things could survive.`), ch: ['But for', 'Instead of', 'In spite of', 'Because of'], a: 0, ex: 'If it were not for ～ ＝ But for ～ ＝ Without ～「〜がなければ」。' },
+  { id: 'u9-4', u: 'u9', lv: 'teiki', q: EN(`${B} I known her phone number, I would have called her.`), ch: ['Had', 'Have', 'If', 'Did'], a: 0, ex: 'If I had known の if を省略して倒置した形。主節が would have called なので過去の仮定。' },
+  { id: 'u9-5', u: 'u9', lv: 'nyushi', q: EN(`${B} you need any help, please let me know.`), ch: ['Should', 'Would', 'Could', 'Were'], a: 0, ex: 'If you should need ～「万一〜なら」の if を省略した倒置。should の仮定では主節に命令文も使える。' },
+  { id: 'u9-6', u: 'u9', lv: 'nyushi', t: 'ord', q: '仮に太陽が西から昇るとしても、私は考えを変えない。', ans: 'Even if the sun were to rise in the west , I would not change my mind .', ex: 'were to ＋ 原形「仮に〜するとしたら」。ありえないことの仮定にも使える。' },
+  { id: 'u9-7', u: 'u9', lv: 'kyotsu', q: CTX(`I left home early that morning; ${B}, I would have missed the first train.`), ch: ['otherwise', 'therefore', 'however', 'besides'], a: 0, ex: 'otherwise「そうでなければ（早く出なかったら）」。後ろが would have missed なので過去の仮定。' },
+  { id: 'u9-8', u: 'u9', lv: 'kyotsu', q: CTX('If it had not been for the map, we would have gotten lost in the mountains.') + '事実として正しいものを選べ。', ch: ['地図があったので、山で道に迷わなかった。', '地図がなかったので、山で道に迷った。', '地図はあったが、山で道に迷った。', '地図がなくても、山で道に迷わなかった。'], a: 0, ex: 'If it had not been for ～「〜がなかったら」は過去の事実の反対。実際は地図があり、道に迷わなかった。' }
+];
+
+// ===== 構文カード [パート, 名前, 形, 例文と意味] =====
+const CARDS = [
+  ['rel', '主格の関係代名詞', '名詞 ＋ who / which ＋ V', '<span class="en">a girl who plays tennis</span><br>テニスをする少女'],
+  ['rel', '目的格の関係代名詞', '名詞 ＋ (which / whom) ＋ S ＋ V', '<span class="en">the book (that) I read</span><br>私が読んだ本。省略できる'],
+  ['rel', '所有格 whose', '名詞 ＋ whose ＋ 名詞 ＋ V', '<span class="en">a boy whose dog is big</span><br>犬が大きい少年'],
+  ['rel', '関係副詞 where / when', '場所・時 ＋ where / when ＋ 完全な文', '<span class="en">the town where I was born</span><br>私が生まれた町'],
+  ['rel', 'That\'s why', 'That\'s why S V', '<span class="en">That\'s why I chose it.</span><br>そういうわけで私はそれを選んだ'],
+  ['rel', 'what', 'what ＝ the thing which', '<span class="en">What I need is time.</span><br>私に必要なのは時間だ'],
+  ['rel', '非制限用法', ', who / , which', '<span class="en">He has a son, who is a doctor.</span><br>息子が1人いて、その息子は医者だ'],
+  ['rel', '前の文を受ける which', '…, which ＋ V', '<span class="en">He lied, which made me angry.</span><br>彼はうそをつき、そのことが私を怒らせた'],
+  ['rel', '前置詞＋関係代名詞', '前置詞 ＋ which / whom', '<span class="en">the house in which I live</span><br>私が住んでいる家'],
+  ['rel', 'whoever', 'whoever ＝ anyone who', '<span class="en">Whoever comes is welcome.</span><br>来る人は誰でも歓迎する'],
+  ['rel', '譲歩の however', 'however ＋ 形/副 ＋ S ＋ V', '<span class="en">However hard you try, …</span><br>どんなにがんばっても'],
+  ['comp', '原級比較', 'as ＋ 原級 ＋ as', '<span class="en">He is as tall as his father.</span><br>彼は父親と同じくらいの背の高さだ'],
+  ['comp', '倍数表現', 'X times as ～ as', '<span class="en">twice as large as</span><br>〜の2倍の大きさ。半分は half as ～ as'],
+  ['comp', '比較級の強調', 'much / far / even ＋ 比較級', '<span class="en">much better</span><br>ずっとよい。very は✕'],
+  ['comp', 'すればするほど', 'The 比較級 ～, the 比較級 …', '<span class="en">The more you read, the more you learn.</span>'],
+  ['comp', 'ますます', '比較級 and 比較級', '<span class="en">It\'s getting colder and colder.</span><br>ますます寒くなっている'],
+  ['comp', 'no more than', 'no more than ＝ only', '<span class="en">no more than 100 yen</span><br>たった100円（少ない！）'],
+  ['comp', 'no less than', 'no less than ＝ as much / many as', '<span class="en">no less than 100 people</span><br>100人も（多い！）'],
+  ['comp', 'not more than', 'not more than ＝ at most', '<span class="en">not more than 100 yen</span><br>せいぜい100円'],
+  ['comp', 'not less than', 'not less than ＝ at least', '<span class="en">not less than 100 yen</span><br>少なくとも100円'],
+  ['comp', 'クジラの構文', 'A is no more B than C is D', '<span class="en">A whale is no more a fish than a horse is.</span><br>クジラが魚でないのは馬が魚でないのと同じ'],
+  ['comp', 'AというよりB', 'not so much A as B', '<span class="en">not so much a scholar as a writer</span><br>学者というより作家'],
+  ['comp', '最上級の言いかえ', '比較級 than any other ＋ 単数', '<span class="en">taller than any other student</span><br>ほかのどの生徒よりも背が高い'],
+  ['comp', 'No other', 'No other ～ is as … as A', '<span class="en">No other city is as large as Tokyo.</span><br>東京がいちばん大きい'],
+  ['comp', '比較の対象', 'that of / those of', '<span class="en">The climate of Japan is milder than that of England.</span>'],
+  ['comp', 'ラテン比較級', 'superior to / prefer A to B', '<span class="en">I prefer tea to coffee.</span><br>コーヒーより紅茶が好きだ'],
+  ['subj', '仮定法過去', 'If S 過去形, S would 原形', '<span class="en">If I were rich, I would travel.</span><br>今の事実の反対'],
+  ['subj', '仮定法過去完了', 'If S had p.p., S would have p.p.', '<span class="en">If I had studied, I would have passed.</span><br>過去の事実の反対'],
+  ['subj', '混合仮定法', 'If S had p.p., S would 原形 now', '<span class="en">If I had slept, I wouldn\'t be tired now.</span><br>過去の条件 → 今の結果'],
+  ['subj', 'I wish（今）', 'I wish S 過去形', '<span class="en">I wish I had a dog.</span><br>犬を飼っていたらいいのに'],
+  ['subj', 'I wish（過去）', 'I wish S had p.p.', '<span class="en">I wish I had studied harder.</span><br>もっと勉強しておけばよかった'],
+  ['subj', 'as if', 'as if S 過去形 / had p.p.', '<span class="en">He talks as if he knew everything.</span><br>まるで何でも知っているかのように'],
+  ['subj', 'It\'s time', 'It\'s time S 過去形', '<span class="en">It\'s time you went to bed.</span><br>もう寝る時間だ'],
+  ['subj', 'if の省略（倒置）', 'Were S / Had S p.p. / Should S', '<span class="en">Had I known, I would have told you.</span>'],
+  ['subj', '〜がなければ', 'Without ～ / But for ～', '<span class="en">Without water, we couldn\'t live.</span><br>今にも過去にも使える'],
+  ['subj', 'If it were not for', 'If it were not for ～（今）', '<span class="en">If it were not for your help, …</span><br>過去は If it had not been for'],
+  ['subj', 'were to', 'If S were to 原形', '<span class="en">If the sun were to rise in the west, …</span><br>仮に〜するとしたら'],
+  ['subj', 'should（万一）', 'If S should 原形, 命令文', '<span class="en">If you should need help, call me.</span><br>万一〜なら'],
+  ['subj', 'otherwise', '…; otherwise, S would …', '<span class="en">I hurried; otherwise, I would have missed it.</span><br>そうでなければ']
+];
+
+// ===== 用語集 [用語, よみ, 説明, 単元] =====
+const GLOSS = [
+  ['先行詞', 'せんこうし', '関係詞が説明する、前にある名詞。<span class="en">the book that I bought</span> の the book。', 'u1'],
+  ['関係代名詞', 'かんけいだいめいし', 'who / which / that / whose / whom など。「接続詞＋代名詞」の働きで、先行詞に説明の文をつなぐ。', 'u1'],
+  ['主格', 'しゅかく', '文の中で主語（〜は・〜が）の役をする形。主格の関係代名詞の後ろには動詞が続く。', 'u1'],
+  ['目的格', 'もくてきかく', '動詞や前置詞の目的語（〜を・〜に）の役をする形。目的格の関係代名詞は省略できる。', 'u1'],
+  ['所有格', 'しょゆうかく', '「〜の」を表す形。関係代名詞では whose。', 'u1'],
+  ['後置修飾', 'こうちしゅうしょく', '名詞を後ろから説明すること。英語では2語以上の説明は名詞の後ろに置く。', 'u1'],
+  ['関係副詞', 'かんけいふくし', 'where / when / why / how。後ろには完全な文が続く。前置詞＋which で言いかえられる。', 'u2'],
+  ['完全な文', 'かんぜんなぶん', '主語・目的語など必要な名詞が欠けていない文。関係副詞の後ろはこの形。', 'u2'],
+  ['不完全な文', 'ふかんぜんなぶん', '主語・目的語・前置詞の後ろの名詞などが欠けている（穴がある）文。関係代名詞や what の後ろはこの形。', 'u2'],
+  ['制限用法', 'せいげんようほう', 'コンマのない関係詞の使い方。「〜するほうの」と先行詞をしぼりこむ。', 'u3'],
+  ['非制限用法', 'ひせいげんようほう', 'コンマのある関係詞の使い方。先行詞に「ちなみに〜」と補足説明を加える。that は使えない。', 'u3'],
+  ['複合関係詞', 'ふくごうかんけいし', 'whoever / whatever / wherever / however など -ever のついた関係詞。「〜は誰でも」「たとえ〜でも」。', 'u3'],
+  ['譲歩', 'じょうほ', '「たとえ〜でも」と、ある事実を認めたうえで反対の内容を述べる言い方。', 'u3'],
+  ['原級', 'げんきゅう', '形容詞・副詞のもとの形。as ～ as で使う。', 'u4'],
+  ['比較級', 'ひかくきゅう', '-er や more ～ の形。2つをくらべて「より〜」を表す。', 'u4'],
+  ['最上級', 'さいじょうきゅう', '-est や most ～ の形。3つ以上の中で「いちばん〜」を表す。', 'u4'],
+  ['倍数表現', 'ばいすうひょうげん', 'X times as ～ as「〜のX倍…」。2倍は twice、半分は half。', 'u4'],
+  ['不規則変化', 'ふきそくへんか', 'good → better → best のように、-er / -est にならない変化。', 'u4'],
+  ['クジラの構文', 'くじらのこうぶん', 'A is no more B than C is D「AがBでないのはCがDでないのと同じ」。例文のクジラからこう呼ばれる。', 'u5'],
+  ['ラテン比較級', 'らてんひかくきゅう', 'superior / inferior / senior / junior / prefer など、than ではなく to を使う比較の表現。', 'u6'],
+  ['直説法', 'ちょくせつほう', '事実や、起こりうることをそのまま述べる言い方。', 'u7'],
+  ['仮定法', 'かていほう', '現実とちがうことを想像して述べる言い方。時制を1つ過去にずらす。', 'u7'],
+  ['仮定法過去', 'かていほうかこ', '今の事実の反対を想像する形。If S 過去形, S would 原形。', 'u7'],
+  ['仮定法過去完了', 'かていほうかこかんりょう', '過去の事実の反対を想像する形。If S had p.p., S would have p.p.', 'u7'],
+  ['混合仮定法', 'こんごうかていほう', 'if節と主節で時がちがう仮定法。「あのとき〜していたら、今ごろ…」など。', 'u8'],
+  ['倒置', 'とうち', 'ふつうの語順（主語＋動詞）を入れかえること。if を省略した仮定法では were / had / should が前に出る。', 'u9'],
+  ['主節', 'しゅせつ', '文の中心になる「主語＋動詞」のかたまり。仮定法では would などがある側。', 'u7'],
+  ['従属節', 'じゅうぞくせつ', 'if や関係詞などで始まり、主節にくっついて働く「主語＋動詞」のかたまり。', 'u7'],
+  ['節', 'せつ', '主語と動詞をふくむ語のかたまり。', 'u1'],
+  ['句', 'く', '主語と動詞をふくまない語のかたまり。<span class="en">on the sofa</span> など。', 'u1'],
+  ['原形', 'げんけい', '動詞のもとの形。would や could の後ろに置く。', 'u7'],
+  ['過去分詞', 'かこぶんし', 'studied / known / seen などの形。had や have の後ろで完了形をつくる。', 'u7']
+];
+
+const RANKS = [[0, '単語レベル'], [10, 'フレーズ使い'], [25, '節つなぎ'], [40, '後置修飾の使い手'], [55, '比較の目利き'], [70, '仮定の旅人'], [85, '構文マスター'], [100, 'グラマー博士']];
+
+// ===== 記録 =====
+const KEY = 'eibunpo-lab-v1';
+let S = { labs: {}, qs: {} };
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const LAB_IDS = UNITS.flatMap(u => u.labs);
+const LAB_NO = {}; UNITS.forEach(u => u.labs.forEach((l, i) => LAB_NO[l] = u.no + '-' + 'ABC'[i]));
+function rate() { const done = LAB_IDS.filter(l => S.labs[l]).length + QS.filter(q => S.qs[q.id] && S.qs[q.id].ever).length; return Math.round(done / (LAB_IDS.length + QS.length) * 100); }
+function rankOf(r) { let n = RANKS[0][1]; RANKS.forEach(([t, name]) => { if (r >= t) n = name; }); return n; }
+let lastRank = null;
+function updateRank() {
+  const r = rate(), n = rankOf(r);
+  $('#rankRate').textContent = r; $('#rankBar').style.width = r + '%'; $('#rankName').textContent = n;
+  if (lastRank && n !== lastRank) toast('ランクアップ！ 「' + n + '」になりました');
+  lastRank = n;
+}
+function unitProg(u) { const qs = QS.filter(q => q.u === u.id); const tot = u.labs.length + qs.length;
+  const d = u.labs.filter(l => S.labs[l]).length + qs.filter(q => S.qs[q.id] && S.qs[q.id].ever).length; return [d, tot]; }
+
+// ===== ルーター =====
+let page = 'home';
+const F = { u: 'all', lv: 'all', t: 'all', st: 'all', order: null };
+function go(p, push = true) {
+  if (!p) p = 'home';
+  if (p.startsWith('drill-') && LVNAME[p.slice(6)]) { F.lv = p.slice(6); F.u = 'all'; }
+  const valid = ['home', 'rel', 'comp', 'subj', 'drill', 'cards', 'glossary', 'guide', ...UNITS.map(u => u.id), ...LEVELS.map(l => 'drill-' + l[0])];
+  if (!valid.includes(p)) p = 'home';
+  page = p;
+  if (push) { try { history.pushState(null, '', '#' + p); } catch (e) {} }
+  render(); try { window.scrollTo(0, 0); } catch (e) {}
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-go]'); if (!a) return;
+  e.preventDefault(); go(a.getAttribute('data-go'));
+});
+addEventListener('hashchange', () => { const p = (location.hash || '').slice(1); if (p && p !== page) go(p, false); });
+addEventListener('popstate', () => { const p = (location.hash || '').slice(1) || 'home'; if (p !== page) go(p, false); });
+
+function render() {
+  const app = $('#app'); app.innerHTML = '';
+  const U = UNITS.find(u => u.id === page);
+  const tab = U ? U.part : page.startsWith('drill') ? 'drill' : page;
+  document.querySelectorAll('#tabs a').forEach(a => a.classList.toggle('on', a.getAttribute('data-go') === tab));
+  const fn = { home: pHome, rel: pPart('rel'), comp: pPart('comp'), subj: pPart('subj'), cards: pCards, glossary: pGloss, guide: pGuide }[page];
+  if (fn) fn(app); else if (page.startsWith('drill')) pDrill(app); else pUnitRender(U, app);
+  updateRank();
+  try { document.title = page === 'home' ? '英文法 ラボ' : ($('#app h1') ? $('#app h1').textContent + '｜英文法 ラボ' : '英文法 ラボ'); } catch (e) {}
+}
+
+// ===== ページ：ホーム =====
+function unitCard(u) {
+  const [d, t] = unitProg(u);
+  return h('a', { class: 'ucard', href: '#' + u.id, 'data-go': u.id },
+    h('span', { class: 'no' }, 'UNIT ' + u.no),
+    h('h3', null, u.title),
+    h('ul', null, u.labs.map(l => h('li', null, LABS[l].title))),
+    h('div', { class: 'pg' }, h('div', { class: 'bar' }, h('i', { style: `width:${d / t * 100}%` })), h('span', { class: 'num' }, d + '/' + t)));
+}
+function partBlock(key) {
+  const P = PARTS[key];
+  return [h('div', { class: 'part' }, h('span', { class: 'tag' }, P.tag), h('h2', null, P.name), h('p', null, P.lead)),
+    h('div', { class: 'units' }, UNITS.filter(u => u.part === key).map(unitCard))];
+}
+function pHome(app) {
+  const right = h('div', { class: 'hero-cv' });
+  app.append(h('section', { class: 'hero' },
+    h('div', null,
+      h('h1', null, '感じてわかる', h('br'), h('em', null, '英文法')),
+      h('p', { class: 'lead' }, '「関係詞」「比較」「仮定法」の3つにしぼった自習サイトです。文をつないだり、高さをくらべたり、時制をずらしたりしながら、まず感覚をつかむ。それから授業・定期試験・大学入試・共通テストの4レベルの問題で仕上げよう。'),
+      say('はじめまして、ブン博士じゃ。文法は暗記科目と思われがちじゃが、形にはちゃんと理由がある。手を動かして「なるほど」と思えたら、あとは問題で確かめるだけじゃ！'),
+      h('div', { class: 'btns' }, h('a', { class: 'btn pri', href: '#u1', 'data-go': 'u1', style: 'text-decoration:none' }, 'UNIT 1 から始める'), h('a', { class: 'btn', href: '#guide', 'data-go': 'guide', style: 'text-decoration:none' }, '使い方ガイドを見る'))),
+    right));
+  heroDemo(right);
+  app.append(...partBlock('rel'), ...partBlock('comp'), ...partBlock('subj'));
+  app.append(h('div', { class: 'part' }, h('span', { class: 'tag' }, 'LEVEL'), h('h2', null, 'レベル別に解く'), h('p', null, '全' + QS.length + '問。目的に合わせてレベルを選ぼう。')),
+    h('div', { class: 'tools' }, LEVELS.map(([k, n, d]) => h('a', { class: 'tool', href: '#drill-' + k, 'data-go': 'drill-' + k },
+      h('span', { class: 'ic lv-' + k }, n[0]), h('div', null, h('b', null, n), h('span', null, d + '（' + QS.filter(q => q.lv === k).length + '問）'))))));
+  app.append(h('div', { class: 'part' }, h('span', { class: 'tag' }, 'TOOLS'), h('h2', null, 'まとめて確認')),
+    h('div', { class: 'tools' },
+      h('a', { class: 'tool', href: '#drill', 'data-go': 'drill' }, h('span', { class: 'ic' }, 'Q'), h('div', null, h('b', null, '問題演習'), h('span', null, `全${QS.length}問・単元・レベル・形式でしぼりこみ`))),
+      h('a', { class: 'tool', href: '#cards', 'data-go': 'cards' }, h('span', { class: 'ic' }, 'Aa'), h('div', null, h('b', null, '構文カード'), h('span', null, `${CARDS.length}枚・タップでめくって暗記`))),
+      h('a', { class: 'tool', href: '#glossary', 'data-go': 'glossary' }, h('span', { class: 'ic' }, 'あ'), h('div', null, h('b', null, '用語集'), h('span', null, `${GLOSS.length}語・五十音順で検索`)))));
+}
+function pointsBox(u) {
+  const box = h('div', { class: 'points' });
+  u.points.forEach(([t, f]) => box.append(h('div', { class: 'pt' }, h('p', { html: t }), h('span', { class: 'fx' }, f))));
+  return box;
+}
+function pPart(key) {
+  return app => {
+    const P = PARTS[key];
+    const says = {
+      rel: 'つなぐ、穴をさがす、コンマを打つ。関係詞はこの3つの感覚でほとんど説明がつくのじゃ。',
+      comp: '物差しを当てる、数直線にのせる、くらべる相手をそろえる。比較は目で見るとぐっとわかりやすくなるぞ。',
+      subj: '時制を1つ過去へずらす。それが「現実ではない」というしるしじゃ。時間の線を思い浮かべながら進めよう。'
+    };
+    app.append(h('div', { class: 'crumb' }, h('a', { href: '#home', 'data-go': 'home' }, 'ホーム'), ' › ', P.name),
+      h('div', { class: 'uh' }, h('span', { class: 'no' }, P.tag), h('h1', null, P.name)),
+      say(says[key]),
+      h('div', { class: 'units' }, UNITS.filter(u => u.part === key).map(unitCard)));
+    UNITS.filter(u => u.part === key).forEach(u => {
+      app.append(h('h2', { class: 'sec-t' }, 'UNIT ' + u.no + '　' + u.title), pointsBox(u));
+    });
+  };
+}
+
+// ===== ページ：単元 =====
+function pUnitRender(u, app) {
+  const P = PARTS[u.part];
+  app.append(h('div', { class: 'crumb' }, h('a', { href: '#home', 'data-go': 'home' }, 'ホーム'), ' › ', h('a', { href: '#' + u.part, 'data-go': u.part }, P.name), ' › UNIT ' + u.no),
+    h('div', { class: 'uh' }, h('span', { class: 'no' }, 'UNIT ' + u.no), h('h1', null, u.title)), say(u.say));
+  app.append(h('h2', { class: 'sec-t' }, '感覚ラボ'));
+  u.labs.forEach(id => {
+    const L = LABS[id];
+    const st = h('span', { class: 'done' + (S.labs[id] ? ' on' : '') }, S.labs[id] ? '✓ 体験ずみ' : '未体験');
+    const body = h('div', { class: 'lab-b' });
+    const lab = h('section', { class: 'lab', id: 'lab-' + id }, h('div', { class: 'lab-h' }, h('span', { class: 'lt' }, 'LAB ' + LAB_NO[id]), h('h3', null, L.title), st), body);
+    app.append(lab);
+    body.append(h('p', { class: 'try', html: '<b>やってみよう：</b>' + L.tryText }));
+    const touch = () => { if (S.labs[id]) return; S.labs[id] = true; save(); st.textContent = '✓ 体験ずみ'; st.classList.add('on'); updateRank(); };
+    try { L.build(body, touch); } catch (err) { body.append(h('p', null, 'このラボの読み込みでエラーが起きました：' + err.message)); console.error(err); }
+    body.append(h('details', { class: 'why' }, h('summary', null, 'ブン博士の解説を読む'), say(L.why)));
+  });
+  app.append(h('h2', { class: 'sec-t' }, '要点'), pointsBox(u));
+  const qs = QS.filter(q => q.u === u.id);
+  app.append(h('h2', { class: 'sec-t' }, '確認問題'));
+  app.append(h('p', { class: 'count' }, `${qs.length}問。授業 → 定期試験 → 大学入試 → 共通テストの順に、だんだんレベルが上がります。`));
+  let n = 0;
+  LEVELS.forEach(([k, name, d]) => {
+    const list = qs.filter(q => q.lv === k); if (!list.length) return;
+    app.append(h('div', { class: 'sub-t' }, h('span', { class: 'lvp lv-' + k }, name), h('span', { style: 'font-size:12.5px;color:var(--muted);font-family:var(--f-body);font-weight:400' }, d)));
+    app.append(h('div', { class: 'qlist' }, list.map(q => qCard(q, ++n))));
+  });
+  const i = UNITS.indexOf(u), pv = UNITS[i - 1], nx = UNITS[i + 1];
+  app.append(h('div', { class: 'pager' },
+    pv ? h('a', { href: '#' + pv.id, 'data-go': pv.id }, h('small', null, '← 前の単元'), 'UNIT ' + pv.no + '　' + pv.title) : h('span'),
+    nx ? h('a', { class: 'nx', href: '#' + nx.id, 'data-go': nx.id }, h('small', null, '次の単元 →'), 'UNIT ' + nx.no + '　' + nx.title) : h('a', { class: 'nx', href: '#drill', 'data-go': 'drill' }, h('small', null, '仕上げ →'), '問題演習へ')));
+}
+
+// ===== 問題カード =====
+const MK = ['⓪', '①', '②', '③'];
+const isEn = s => /^[\x20-\x7E　（）：]+$/.test(s);
+function record(q, ok) { const prev = S.qs[q.id] || {}; S.qs[q.id] = { ok, ever: !!(prev.ever || ok), n: (prev.n || 0) + 1 }; save(); updateRank(); }
+function qCard(q, n) {
+  const rec = S.qs[q.id];
+  const st = h('span', { class: 'st' + (rec ? (rec.ok ? ' ok' : ' ng') : '') }, rec ? (rec.ok ? '前回 正解' : '前回 不正解') : '未回答');
+  const unit = UNITS.find(u => u.id === q.u);
+  const box = h('div', { class: 'q' },
+    h('div', { class: 'q-h' }, h('span', null, (n ? '問' + n + '　' : '') + 'UNIT ' + unit.no + ' ' + unit.title), h('span', { class: 'lvp lv-' + q.lv }, LVNAME[q.lv]), h('span', { class: 'ty' }, q.t === 'ord' ? '並べかえ' : '4択'), st),
+    h('p', { class: 'qt', html: q.t === 'ord' ? '日本語に合うように語を並べかえよ。<br><b>' + q.q + '</b>' : q.q }));
+  const setSt = ok => { st.textContent = ok ? '正解！' : '不正解'; st.className = 'st ' + (ok ? 'ok' : 'ng'); };
+  if (q.t === 'ord') { ordBody(q, box, setSt); return box; }
+  const order = shuffled([0, 1, 2, 3].slice(0, q.ch.length), q.id);
+  const chs = h('div', { class: 'chs' }); box.append(chs);
+  let answered = false;
+  const bs = order.map((oi, i) => {
+    const c = q.ch[oi];
+    const b = h('button', { type: 'button', class: 'ch' }, h('span', { class: 'mk' }, String(i)), h('span', { class: 'tx' + (isEn(c) ? ' en' : '') }, c));
+    b.addEventListener('click', () => {
+      if (answered) return; answered = true;
+      const ok = oi === q.a, ri = order.indexOf(q.a);
+      b.classList.add('sel', ok ? 'right' : 'wrong'); bs[ri].classList.add('right');
+      record(q, ok); setSt(ok);
+      const ex = h('div', { class: 'ex' }, h('b', null, (ok ? '正解！ ' : '正解は ' + MK[ri] + '。 ')), h('span', { html: q.ex }));
+      const again = h('button', { type: 'button', class: 'btn', style: 'margin-top:8px' }, 'もう一度解く');
+      again.addEventListener('click', () => { answered = false; bs.forEach(x => x.classList.remove('sel', 'right', 'wrong')); ex.remove(); again.remove(); });
+      box.append(ex, again);
+    });
+    chs.append(b); return b;
+  });
+  return box;
+}
+function ordBody(q, box, setSt) {
+  const toks = q.ans.split(' ');
+  const end = PUNCT.test(toks[toks.length - 1]) ? toks.pop() : '';
+  const shown = toks.map((t, k) => k === 0 && !/^I($|')/.test(t) ? t[0].toLowerCase() + t.slice(1) : t);
+  const order = shuffled(toks.map((t, k) => k), q.id + 'o');
+  let sel = [], done = false;
+  const area = h('div', { class: 'oarea' }), pool = h('div', { class: 'opool' }), bb = h('div', { class: 'btns' });
+  box.append(area, pool, bb);
+  const chk = btn(bb, '答え合わせ', () => {
+    done = true;
+    const ok = sel.map(k => toks[k].toLowerCase()).join(' ') === toks.map(t => t.toLowerCase()).join(' ');
+    area.classList.add(ok ? 'ok' : 'ng'); record(q, ok); setSt(ok); draw();
+    const right = q.ans.replace(/ ([.,!?;])/g, '$1');
+    const ex = h('div', { class: 'ex' }, h('b', null, ok ? '正解！ ' : '正解は '), ok ? null : h('span', { class: 'en' }, right), ok ? null : h('br'), h('span', { html: q.ex }));
+    const again = h('button', { type: 'button', class: 'btn', style: 'margin-top:8px' }, 'もう一度解く');
+    again.addEventListener('click', () => { done = false; sel = []; area.classList.remove('ok', 'ng'); ex.remove(); again.remove(); draw(); });
+    box.append(ex, again);
+  }, true);
+  const clr = btn(bb, 'やり直す', () => { if (done) return; sel = []; draw(); });
+  function draw() {
+    area.innerHTML = '';
+    if (!sel.length) area.append(h('span', { class: 'ph' }, '下の語をタップして順に並べよう'));
+    sel.forEach((k, j) => { const c = h('button', { type: 'button', class: 'oc' }, shown[k]); c.addEventListener('click', () => { if (done) return; sel.splice(j, 1); draw(); }); area.append(c); });
+    if (sel.length === toks.length && end) area.append(h('span', { class: 'en', style: 'font-size:17px' }, end));
+    pool.innerHTML = '';
+    order.forEach(k => { const c = h('button', { type: 'button', class: 'oc' + (sel.includes(k) ? ' used' : '') }, shown[k]); c.addEventListener('click', () => { if (done || sel.includes(k)) return; sel.push(k); draw(); }); pool.append(c); });
+    chk.disabled = done || sel.length !== toks.length; clr.disabled = done;
+  }
+  draw();
+}
+
+// ===== ページ：問題演習 =====
+function pDrill(app) {
+  app.append(h('div', { class: 'uh' }, h('span', { class: 'no' }, 'DRILL'), h('h1', null, '問題演習')),
+    say('すべてこの教材のオリジナル問題じゃ。レベルでしぼりこんだり、まちがえた問題だけを集めて解き直したりできるぞ。'));
+  app.append(h('div', { class: 'lvguide' }, LEVELS.map(([k, n, d]) => h('div', null, h('b', { class: 'lv-' + k }, n), d))));
+  const fl = h('div', { class: 'filters' }); app.append(fl);
+  const list = h('div', { class: 'qlist' }), cnt = h('p', { class: 'count' });
+  function row(label, items, key) {
+    const r = h('div', { class: 'row' }, h('span', null, label));
+    items.forEach(([v, t]) => { const c = h('button', { type: 'button', class: 'chip' + (F[key] === v ? ' on' : '') }, t);
+      c.addEventListener('click', () => { F[key] = v; r.querySelectorAll('.chip').forEach(x => x.classList.remove('on')); c.classList.add('on'); draw(); }); r.append(c); });
+    fl.append(r);
+  }
+  row('単元', [['all', 'すべて'], ...UNITS.map(u => [u.id, u.no + ' ' + u.title])], 'u');
+  row('レベル', [['all', 'すべて'], ...LEVELS.map(l => [l[0], l[1]])], 'lv');
+  row('形式', [['all', 'すべて'], ['ch', '4択'], ['ord', '並べかえ']], 't');
+  row('状態', [['all', 'すべて'], ['new', '未回答'], ['ng', 'まちがえた'], ['ok', '正解ずみ']], 'st');
+  const r4 = h('div', { class: 'row' }, h('span', null, '並び'));
+  btn(r4, 'シャッフル', () => { F.order = QS.map(q => [q.id, Math.random()]).reduce((m, [k, v]) => (m[k] = v, m), {}); draw(); });
+  btn(r4, '単元順', () => { F.order = null; draw(); });
+  fl.append(r4);
+  app.append(cnt, list);
+  const LVO = LEVELS.map(l => l[0]);
+  function draw() {
+    let qs = QS.filter(q => (F.u === 'all' || q.u === F.u) && (F.lv === 'all' || q.lv === F.lv) && (F.t === 'all' || (F.t === 'ord') === (q.t === 'ord'))
+      && (F.st === 'all' || (F.st === 'new' && !S.qs[q.id]) || (F.st === 'ng' && S.qs[q.id] && !S.qs[q.id].ok) || (F.st === 'ok' && S.qs[q.id] && S.qs[q.id].ok)));
+    if (F.order) qs = qs.slice().sort((a, b) => F.order[a.id] - F.order[b.id]);
+    else if (F.u === 'all') qs = qs.slice().sort((a, b) => a.u.localeCompare(b.u) || LVO.indexOf(a.lv) - LVO.indexOf(b.lv));
+    cnt.textContent = qs.length + '問';
+    list.innerHTML = ''; qs.forEach((q, i) => list.append(qCard(q, i + 1)));
+    if (!qs.length) list.append(say(F.st === 'ng' ? 'まちがえた問題はないぞ。見事じゃ！' : 'この条件に合う問題はないようじゃ。しぼりこみを変えてみよう。'));
+  }
+  draw();
+}
+
+// ===== ページ：構文カード =====
+function pCards(app) {
+  app.append(h('div', { class: 'uh' }, h('span', { class: 'no' }, 'CARDS'), h('h1', null, '構文カード')),
+    say('表に名前、裏に形と例文が書いてある。形を思い出してからタップしてめくるのじゃ。'));
+  let part = 'all', allFlip = false;
+  const r = h('div', { class: 'btns', style: 'margin-bottom:12px' });
+  const grid = h('div', { class: 'cards' });
+  seg(r, [['all', 'すべて'], ['rel', '関係詞'], ['comp', '比較'], ['subj', '仮定法']], 'all', v => { part = v; draw(); });
+  btn(r, '全部めくる／もどす', () => { allFlip = !allFlip; grid.querySelectorAll('.fc').forEach(c => c.classList.toggle('flip', allFlip)); });
+  app.append(r, grid);
+  function draw() {
+    grid.innerHTML = '';
+    CARDS.filter(c => part === 'all' || c[0] === part).forEach(([p, name, f, d]) => {
+      const c = h('button', { type: 'button', class: 'fc' + (allFlip ? ' flip' : ''), 'aria-label': name + 'の構文カード' },
+        h('div', { class: 'in' }, h('div', { class: 'fa' }, h('small', null, PARTS[p].name), h('b', null, name), h('small', null, 'タップで形を見る')),
+          h('div', { class: 'fb' }, h('small', null, name), h('span', { class: 'f' }, f), h('p', { html: d }))));
+      c.addEventListener('click', () => c.classList.toggle('flip')); grid.append(c);
+    });
+  }
+  draw();
+}
+
+// ===== ページ：用語集 =====
+function gyou(ch) {
+  const rows = [['あ', 'あいうえおぁぃぅぇぉ'], ['か', 'かきくけこがぎぐげご'], ['さ', 'さしすせそざじずぜぞ'], ['た', 'たちつてとだぢづでどっ'], ['な', 'なにぬねの'], ['は', 'はひふへほばびぶべぼぱぴぷぺぽ'], ['ま', 'まみむめも'], ['や', 'やゆよゃゅょ'], ['ら', 'らりるれろ'], ['わ', 'わをん']];
+  for (const [k, s] of rows) if (s.includes(ch)) return k; return 'その他';
+}
+function pGloss(app) {
+  app.append(h('div', { class: 'uh' }, h('span', { class: 'no' }, 'WORDS'), h('h1', null, '用語集')));
+  const inp = h('input', { type: 'search', id: 'gsearch', class: 'gsearch', placeholder: '用語や読みで検索（例：せんこうし、倒置）', 'aria-label': '用語を検索' });
+  const out = h('div', { class: 'gl' }); app.append(inp, out);
+  const sorted = GLOSS.slice().sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+  function draw() {
+    const k = inp.value.trim(); out.innerHTML = '';
+    const items = sorted.filter(g => !k || g[0].includes(k) || g[1].includes(k) || g[2].includes(k));
+    if (!items.length) { out.append(say('その言葉は見つからなかった。ひらがなの読みでも探してみよう。')); return; }
+    const groups = {}; items.forEach(g => (groups[gyou(g[1][0])] = groups[gyou(g[1][0])] || []).push(g));
+    Object.keys(groups).forEach(gk => {
+      out.append(h('div', { class: 'gl-k' }, gk + '行'));
+      const dl = h('dl'); groups[gk].forEach(([t, y, d, u]) => { const U = UNITS.find(x => x.id === u);
+        dl.append(h('dt', null, t, h('small', null, y)), h('dd', null, h('span', { html: d }), ' ', U ? h('a', { href: '#' + u, 'data-go': u }, '→ UNIT ' + U.no) : null)); });
+      out.append(dl);
+    });
+  }
+  inp.addEventListener('input', draw); draw();
+}
+
+// ===== ページ：使い方 =====
+function pGuide(app) {
+  app.append(h('div', { class: 'uh' }, h('span', { class: 'no' }, 'GUIDE'), h('h1', null, '使い方ガイド')));
+  const g = h('div', { class: 'guide', html: `
+    <h3>このサイトについて</h3>
+    <p>英文法の中でもつまずきやすい「関係詞」「比較」「仮定法」にしぼって、手を動かしながら学ぶ自習用サイトです。9つの単元に、あわせて${LAB_IDS.length}個の感覚ラボと${QS.length}問の確認問題があります。</p>
+    <h3>4つのレベル</h3>
+    <ul>${LEVELS.map(([k, n, d]) => `<li><b>${n}</b>：${d}（${QS.filter(q => q.lv === k).length}問）</li>`).join('')}</ul>
+    <h3>おすすめの進め方</h3>
+    <ol><li>まず<b>感覚ラボ</b>で、文をつないだり、スライダーを動かしたりしてみる。「やってみよう」の課題に取り組む。</li><li>気づいたことを<b>ブン博士の解説</b>で確かめる。</li><li><b>要点</b>を読んで、形と意味を言葉で整理する。</li><li><b>確認問題</b>を授業レベルから順に解く。まちがえたらラボにもどって確かめる。</li><li>テスト前は<b>問題演習</b>でレベルをしぼりこみ、「まちがえた」だけを集めて解き直す。</li></ol>
+    <h3>問題の形式</h3>
+    <ul><li><b>4択</b>：選択肢の番号（⓪①②③）を選ぶと、すぐに正解と解説が出ます。</li><li><b>並べかえ</b>：下の語をタップした順に並びます。並べた語をタップするともどせます。全部並べたら「答え合わせ」。</li></ul>
+    <h3>達成率とランク</h3>
+    <p>ラボを1回でも操作すると「体験ずみ」、確認問題に1回でも正解すると「正解ずみ」になり、達成率が上がります。ランクは ${RANKS.map(r => r[1] + '（' + r[0] + '%）').join(' → ')} と上がっていきます。</p>
+    <h3>学習の記録について</h3>
+    <p>記録はこの端末のブラウザにだけ保存され、先生や他の人には送られません。別の端末やブラウザでは記録は引きつがれません。シークレットモードでは、閉じると記録が消えます。</p>
+    <h3>動作環境</h3>
+    <p>Chrome・Edge・Safari の新しいバージョンで動きます。ファイルで配られた場合は、パソコンに保存してからブラウザで開いてください。</p>` });
+  app.append(g);
+  const rs = h('div', { class: 'btns', style: 'margin-top:14px' });
+  btn(rs, '学習の記録をリセットする', () => {
+    const m = h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true' }, h('div', { class: 'box' },
+      h('b', null, '学習の記録をすべて消しますか？'), h('p', { style: 'margin:0;font-size:14px' }, '体験ずみのラボと、問題の正解記録が消えます。元にはもどせません。'),
+      h('div', { class: 'btns' }, h('button', { type: 'button', class: 'btn pri', onclick: () => { S = { labs: {}, qs: {} }; save(); m.remove(); lastRank = null; render(); toast('記録をリセットしました'); } }, '消す'),
+        h('button', { type: 'button', class: 'btn', onclick: () => m.remove() }, 'やめる'))));
+    document.body.append(m);
+  });
+  g.append(rs);
+}
+
+// ===== 起動 =====
+try { go((location.hash || '').slice(1) || 'home', false); }
+catch (e) { $('#app').innerHTML = '<div class="loading"><b>エラーが起きました。</b><br>' + e.message + '</div>'; console.error(e); }
+
+</script>
+</body>
+</html>
